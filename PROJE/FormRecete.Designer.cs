@@ -48,10 +48,9 @@
             button4 = new Button();
             lblilacListesi = new Label();
             dataGridilacListesi = new DataGridView();
-            textBox5 = new TextBox();
+            txtIlac = new TextBox();
             dataGridHastaILac = new DataGridView();
             lblHastaİlaç = new Label();
-            Load += FormRecete_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridilacListesi).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridHastaILac).BeginInit();
             SuspendLayout();
@@ -227,12 +226,13 @@
             dataGridilacListesi.Size = new Size(612, 367);
             dataGridilacListesi.TabIndex = 19;
             // 
-            // textBox5
+            // txtIlac
             // 
-            textBox5.Location = new Point(847, 49);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(612, 27);
-            textBox5.TabIndex = 20;
+            txtIlac.Location = new Point(847, 49);
+            txtIlac.Name = "txtIlac";
+            txtIlac.Size = new Size(612, 27);
+            txtIlac.TabIndex = 20;
+            txtIlac.TextChanged += txtIlac_TextChanged;
             // 
             // dataGridHastaILac
             // 
@@ -260,7 +260,7 @@
             ClientSize = new Size(1494, 1038);
             Controls.Add(lblHastaİlaç);
             Controls.Add(dataGridHastaILac);
-            Controls.Add(textBox5);
+            Controls.Add(txtIlac);
             Controls.Add(dataGridilacListesi);
             Controls.Add(lblilacListesi);
             Controls.Add(button4);
@@ -283,7 +283,7 @@
             Controls.Add(lblRecete);
             Name = "FormRecete";
             Text = "FormRecete";
-            Load += FormRecete_Load_1;
+            Load += FormRecete_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridilacListesi).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridHastaILac).EndInit();
             ResumeLayout(false);
@@ -312,7 +312,7 @@
         private Button button4;
         private Label lblilacListesi;
         private DataGridView dataGridilacListesi;
-        private TextBox textBox5;
+        private TextBox txtIlac;
         private DataGridView dataGridHastaILac;
         private Label lblHastaİlaç;
     }

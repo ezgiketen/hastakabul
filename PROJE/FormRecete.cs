@@ -21,23 +21,28 @@ namespace PROJE
 
         private void FormRecete_Load(object sender, EventArgs e)
         {
+            LoadData();
+        }
+
+        private void LoadData()
+        {
             OracleDbHelper dbHelper = new OracleDbHelper();
 
             using (OracleConnection conn = dbHelper.GetConnection())
             {
                 conn.Open();
-                string sql = "SELECT L.ILAC_ADI , L.BARKODU , L.ODENME_DURUMU , L.AMBALAJ_MIKTARI, L.TEKDOZ_MIKTARI FROM HASTANE.MEDULA_ILAC_LISTESI L WHERE ILAC_ADI LIKE @filter";
+                string sql = "SELECT L.ILAC_ADI , L.BARKODU , L.ODENME_DURUMU , L.AMBALAJ_MIKTARI, L.TEKDOZ_MIKTARI FROM HASTANE.MEDULA_ILAC_LISTESI L WHERE UPPER(ILAC_ADI) LIKE UPPER(:filter)";
 
                 using (OracleCommand command = new OracleCommand(sql, conn))
                 {
-                    command.Parameters.Add(":filter", OracleDbType.Varchar2).Value = "%" + "%";
+                    string filterValue = "%" + txtIlac.Text + "%";
+
+                    command.Parameters.Add(":filter", OracleDbType.Varchar2).Value = filterValue;
 
                     using (OracleDataAdapter adapter = new OracleDataAdapter(command))
                     {
 
                         DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);  // Veri dolduruluyor
-
                         dataTable.Clear();
                         adapter.Fill(dataTable);
                         dataGridilacListesi.DataSource = dataTable;
@@ -48,29 +53,29 @@ namespace PROJE
                         dataGridilacListesi.DefaultCellStyle.SelectionBackColor = dataGridilacListesi.DefaultCellStyle.BackColor;
                         dataGridilacListesi.DefaultCellStyle.SelectionForeColor = dataGridilacListesi.DefaultCellStyle.ForeColor;
 
-                            if (dataTable.Columns.Count > 0)
-                            {
-                                dataGridilacListesi.Columns[0].HeaderText = "ILAC ADI";
-                                dataGridilacListesi.Columns[0].DataPropertyName = "ILAC_ADI";
+                        if (dataTable.Columns.Count > 0)
+                        {
+                            dataGridilacListesi.Columns[0].HeaderText = "ILAC ADI";
+                            dataGridilacListesi.Columns[0].DataPropertyName = "ILAC_ADI";
 
-                                dataGridilacListesi.Columns[1].HeaderText = "BARKOD";
-                                dataGridilacListesi.Columns[1].DataPropertyName = "BARKODU";
+                            dataGridilacListesi.Columns[1].HeaderText = "BARKOD";
+                            dataGridilacListesi.Columns[1].DataPropertyName = "BARKODU";
 
-                                dataGridilacListesi.Columns[2].HeaderText = "ODENME DURUMU";
-                                dataGridilacListesi.Columns[2].DataPropertyName = "ODENME_DURUMU";
+                            dataGridilacListesi.Columns[2].HeaderText = "ODENME DURUMU";
+                            dataGridilacListesi.Columns[2].DataPropertyName = "ODENME_DURUMU";
 
-                                dataGridilacListesi.Columns[3].HeaderText = "AMBALAJ BIRIM";
-                                dataGridilacListesi.Columns[3].DataPropertyName = "AMBALAJ_MIKTARI";
+                            dataGridilacListesi.Columns[3].HeaderText = "AMBALAJ BIRIM";
+                            dataGridilacListesi.Columns[3].DataPropertyName = "AMBALAJ_MIKTARI";
 
-                                dataGridilacListesi.Columns[4].HeaderText = "TEK DOZ BIRIM";
-                                dataGridilacListesi.Columns[4].DataPropertyName = "TEKDOZ_MIKTARI";
+                            dataGridilacListesi.Columns[4].HeaderText = "TEK DOZ BIRIM";
+                            dataGridilacListesi.Columns[4].DataPropertyName = "TEKDOZ_MIKTARI";
 
 
 
-                            }
+                        }
 
-                            for (int i = 0; i < dataGridilacListesi.Rows.Count; i++)
-                           {
+                        for (int i = 0; i < dataGridilacListesi.Rows.Count; i++)
+                        {
                             if (i % 2 == 0)
                             {
                                 dataGridilacListesi.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#fbf2fb");
@@ -84,11 +89,12 @@ namespace PROJE
                     }
                 }
             }
+
+
         }
-
-        private void FormRecete_Load_1(object sender, EventArgs e)
+        private void txtIlac_TextChanged(object sender, EventArgs e)
         {
-
+           LoadData();
         }
     }
 }
