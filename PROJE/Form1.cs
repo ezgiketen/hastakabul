@@ -55,6 +55,17 @@ namespace PROJE
             }
         }
 
+        // Form kapanmadan önce kullanýcýya onay sorusu göster
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var result = MessageBox.Show("Kapatmaya emin misiniz?", "Uyarý", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true;  // Kapanmayý iptal et
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             OracleDbHelper dbHelper = new OracleDbHelper();
@@ -78,14 +89,14 @@ namespace PROJE
                     }
                 }
             }
-          
+
 
             // Form ayarlarý
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.Sizable;
 
-            //GridSatýrRenklendirme
-       
+            // FormClosing olayýný baðla
+            this.FormClosing += Form1_FormClosing;
 
 
             // Kan grubu listesi
@@ -99,8 +110,6 @@ namespace PROJE
 
             // Tema seçeneklerini ekle
             cmbTema.Items.Clear();
-            cmbTema.Items.Add("Mint");
-            cmbTema.Items.Add("Lavender");
             cmbTema.Items.Add("Ivory");
             cmbTema.Items.Add("Snow");
             cmbTema.Items.Add("Sky");
@@ -373,18 +382,21 @@ namespace PROJE
 
 
 
-                                    string secilenKanGrubu = reader.GetString(reader.GetOrdinal("KAN_GRUBU")); ;// = comboBox1.SelectedItem?.ToString();
+                                    string secilenKanGrubu;
+                                    try
+                                    {
+                                        secilenKanGrubu = reader.GetString(reader.GetOrdinal("KAN_GRUBU")); ;// = comboBox1.SelectedItem?.ToString();
+
+                                    }
+                                    catch (Exception err)
+                                    {
+                                        secilenKanGrubu = "-";
+                                    }
 
                                     if (string.IsNullOrEmpty(secilenKanGrubu))
                                     {
                                         secilenKanGrubu = "-";
                                     }
-                                    //else
-                                    //{
-
-                                    //    secilenKanGrubu = "-";
-                                    //}
-
 
 
                                     string cinsiyetBilgi;
@@ -530,8 +542,10 @@ namespace PROJE
                         }
 
 
-                        string sql2 = "SELECT k.DOSYA_NO , p.PROTOKOL_NO , p.GTARIH , b.BOLUM_ADI  FROM HASTANE.KIMLIK k , HASTANE.PROTOKOL p  , HASTANE.BOLUM b " +
-                               "WHERE p.dosya_no = k.dosya_no(+) AND p.bolum = b.bolum(+) AND k.TC_KIMLIK_NO = :TC";
+                        string sql2 = "SELECT k.DOSYA_NO, p.PROTOKOL_NO, p.GTARIH, b.BOLUM_ADI, i.ODENEN, i.KALAN FROM HASTANE.KIMLIK k ,HASTANE.PROTOKOL p  ,HASTANE.BOLUM b ,HASTANE.ISLEMYAP i" +
+                   " WHERE p.dosya_no = k.dosya_no(+) AND p.bolum = b.bolum(+) AND p.protokol_no = i.protokol_no(+) AND k.TC_KIMLIK_NO = :TC";
+
+
 
                         using (OracleCommand cmd = new OracleCommand(sql2, conn))
                         {
@@ -545,18 +559,25 @@ namespace PROJE
                                 DataTable dataTable = new DataTable();
                                 adapter.Fill(dataTable);
 
-                                dataGridView1.DataSource = dataTable;
+                                int rowsAffected = adapter.Fill(dataTable);
 
-                                    // Satýrýn index'ine göre renk atama
-                                  for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                                     {
+                                dataGridView1.DataSource = dataTable;
+                                dataGridView1.AllowUserToAddRows = false;
+                                dataGridView1.RowHeadersVisible = false;
+
+                                dataGridView1.DefaultCellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.BackColor;
+                                dataGridView1.DefaultCellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.ForeColor;
+
+                                // Satýrýn index'ine göre renk atama
+                                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                                {
                                     if (i % 2 == 0) // Çift satýrlar
                                     {
                                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#fbf2fb");
                                     }
                                     else // Tek satýrlar
                                     {
-                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#f8fbf2"); 
+                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#f8fbf2");
                                     }
 
 
@@ -570,17 +591,23 @@ namespace PROJE
 
                                         dataGridView1.Columns[2].HeaderText = "GELIS TARIHI";
                                         dataGridView1.Columns[2].DataPropertyName = "GTARIH";
+                                        dataGridView1.Columns[2].DefaultCellStyle.Format = "dd-MM-yyyy";
 
                                         dataGridView1.Columns[3].HeaderText = "POLIKINLIK";
                                         dataGridView1.Columns[3].DataPropertyName = "BOLUM_ADI";
 
+                                        dataGridView1.Columns[4].HeaderText = "ÖDENEN";
+                                        dataGridView1.Columns[4].DataPropertyName = "ODENEN";
 
+                                        dataGridView1.Columns[5].HeaderText = "KALAN";
+                                        dataGridView1.Columns[5].DataPropertyName = "KALAN";
 
                                     }
                                 }
                             }
 
                         }
+
                     }
                     catch (Exception ex) { MessageBox.Show(ex.Message); return; }
                 }
@@ -601,72 +628,6 @@ namespace PROJE
                 switch (cmbTema.SelectedItem.ToString())
 
                 {
-                    case "Mint":
-                        groupBoxKimlik.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        groupBoxHastaBilgi.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        sideBar.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-                        groupBoxAra.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        Form1.ActiveForm.BackColor = ColorTranslator.FromHtml("#f5fffa");
-
-                        btnVezne.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        btnOdemeGecmisi.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        btnMuayene.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        btnTani.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        btnRecete.BackColor = ColorTranslator.FromHtml("#f0fff0");
-                        btnGebelikTakibi.BackColor = ColorTranslator.FromHtml("#f0fff0");
-
-                        btnHasta.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-                        btnDoktor.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-                        btnHemsire.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-                        flowPanelHasta.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-                        flowPanelHemsire.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-                        flowPanelDoktor.BackColor = ColorTranslator.FromHtml("#c1cdc1");
-
-
-                        // PictureBox Ayarlarý
-                        pictureBox1.Dock = DockStyle.None;
-                        pictureBox1.Anchor = AnchorStyles.None;
-                        pictureBox1.Size = new Size(118, 100);
-                        pictureBox1.Location = new Point(532, 15);
-                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pictureBox1.BackgroundImage = new Bitmap("C:\\Users\\DELL\\Desktop\\projeResimler\\mint.png");
-
-                        // UI Güncellemesi
-                        pictureBox1.Invalidate();
-                        pictureBox1.Refresh();
-
-                        break;
-
-                    case "Lavender":
-                        groupBoxKimlik.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        groupBoxHastaBilgi.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        groupBoxAra.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        sideBar.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-                        Form1.ActiveForm.BackColor = ColorTranslator.FromHtml("#FFFCFE");
-
-                        btnVezne.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        btnOdemeGecmisi.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        btnMuayene.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        btnTani.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        btnRecete.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-                        btnGebelikTakibi.BackColor = ColorTranslator.FromHtml("#FFF9FD");
-
-
-                        btnHasta.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-                        btnDoktor.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-                        btnHemsire.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-                        flowPanelHasta.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-                        flowPanelHemsire.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-                        flowPanelDoktor.BackColor = ColorTranslator.FromHtml("#cdc1c5");
-
-
-                        pictureBox1.Dock = DockStyle.None;
-                        pictureBox1.Anchor = AnchorStyles.None;
-                        pictureBox1.Size = new Size(118, 100);
-                        pictureBox1.Location = new Point(532, 15);
-                        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-                        pictureBox1.BackgroundImage = new System.Drawing.Bitmap("C:\\Users\\DELL\\Desktop\\projeResimler\\lavender.png");
-                        break;
 
                     case "Ivory":
                         groupBoxKimlik.BackColor = ColorTranslator.FromHtml("#eeeee0");
@@ -690,6 +651,7 @@ namespace PROJE
                         flowPanelHemsire.BackColor = ColorTranslator.FromHtml("#cdcdc1");
                         flowPanelDoktor.BackColor = ColorTranslator.FromHtml("#cdcdc1");
 
+                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#eeeee0");
 
                         pictureBox1.Dock = DockStyle.None;
                         pictureBox1.Anchor = AnchorStyles.None;
@@ -713,6 +675,7 @@ namespace PROJE
                         btnRecete.BackColor = ColorTranslator.FromHtml("#eee9e9");
                         btnGebelikTakibi.BackColor = ColorTranslator.FromHtml("#eee9e9");
 
+                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#eee9e9");
 
                         btnHasta.BackColor = ColorTranslator.FromHtml("#cdc9c9");
                         btnDoktor.BackColor = ColorTranslator.FromHtml("#cdc9c9");
@@ -730,9 +693,11 @@ namespace PROJE
                         break;
 
                     case "Sky":
+
+                        //175; 190; 210 
                         groupBoxKimlik.BackColor = ColorTranslator.FromHtml("#F2F8FB");
                         groupBoxHastaBilgi.BackColor = ColorTranslator.FromHtml("#F2F8FB");
-                        sideBar.BackColor = ColorTranslator.FromHtml("#8B9BAF");
+                        sideBar.BackColor = Color.FromArgb(190, 200, 215);
                         groupBoxAra.BackColor = ColorTranslator.FromHtml("#F2F8FB");
                         Form1.ActiveForm.BackColor = ColorTranslator.FromHtml("#FFFFFF");
 
@@ -743,12 +708,15 @@ namespace PROJE
                         btnRecete.BackColor = ColorTranslator.FromHtml("#F2F8FB");
                         btnGebelikTakibi.BackColor = ColorTranslator.FromHtml("#F2F8FB");
 
-                        btnHasta.BackColor = ColorTranslator.FromHtml("#8B9BAF");
-                        btnDoktor.BackColor = ColorTranslator.FromHtml("#8B9BAF");
-                        btnHemsire.BackColor = ColorTranslator.FromHtml("#8B9BAF");
-                        flowPanelHasta.BackColor = ColorTranslator.FromHtml("#8B9BAF");
-                        flowPanelHemsire.BackColor = ColorTranslator.FromHtml("#8B9BAF");
-                        flowPanelDoktor.BackColor = ColorTranslator.FromHtml("#8B9BAF");
+                        btnHasta.BackColor = Color.FromArgb(190, 200, 215);
+                        btnDoktor.BackColor = Color.FromArgb(190, 200, 215);
+                        btnHemsire.BackColor = Color.FromArgb(190, 200, 215);
+                        flowPanelHasta.BackColor = Color.FromArgb(190, 200, 215);
+                        flowPanelHemsire.BackColor = Color.FromArgb(190, 200, 215);
+                        flowPanelDoktor.BackColor = Color.FromArgb(190, 200, 215);
+
+
+                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#F2F8FB");
 
                         pictureBox1.Dock = DockStyle.None;
                         pictureBox1.Anchor = AnchorStyles.None;
@@ -765,7 +733,7 @@ namespace PROJE
 
                 Properties.Settings.Default.SelectedTheme = selectedTheme;
                 Properties.Settings.Default.Save();
-                cmbTema.Text = "Tema";
+
 
             }
         }
@@ -1274,6 +1242,18 @@ namespace PROJE
 
         private void btnHam_Click(object sender, EventArgs e)
         {
+            if (sideBar.Width <= 58)
+            {
+                groupBoxHastaBilgi.Location = new Point(264, 103);
+                groupBoxKimlik.Location = new Point(264, 103);
+                dataGridView1.Location = new Point(980, 103);
+            }
+            else
+            {
+                groupBoxHastaBilgi.Location = new Point(90, 103);
+                groupBoxKimlik.Location = new Point(90, 103);
+                dataGridView1.Location = new Point(803, 103);
+            }
 
             if (menuExpandHemsire)
             {
@@ -1295,7 +1275,6 @@ namespace PROJE
             }
 
             sideBarTransition.Start();
-
 
         }
 
@@ -1366,13 +1345,17 @@ namespace PROJE
             groupBoxHastaBilgi.Visible = false;
             dataGridView1.Visible = false;
         }
-      
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
 
-
+        private void btnRecete_Click(object sender, EventArgs e)
+        {
+            FormRecete formRecete = new FormRecete();
+            formRecete.Show();
+        }
     }
 }
