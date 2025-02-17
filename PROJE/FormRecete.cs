@@ -22,7 +22,54 @@ namespace PROJE
         private void FormRecete_Load(object sender, EventArgs e)
         {
             LoadData();
+
+            OracleDbHelper dbHelper = new OracleDbHelper();
+
+            using (OracleConnection connection = dbHelper.GetConnection())
+            {
+                connection.Open();
+
+                //COMBOBOX KULLANIM ŞEKLİNİ DOLDURMA İŞLEMİ
+                //Form ilk açıldığında verileri ComboBox’a yüklemek için burda yazdık
+
+                // ComboBox'ı temizle
+                cmbKullanımSekli.Items.Clear();
+                cmbKullanımPeriyodu.Items.Clear();
+
+                // Veritabanından veri çekmek için SQL sorgusu
+                string sql = "SELECT ADI FROM HASTANE.SNET_ILACKULLANIMSEKLI";
+                string sql2 = "SELECT ADI FROM HASTANE.SNET_ILACKULLANIMPERIYODU ";
+                using (OracleCommand command = new OracleCommand(sql, connection))
+                {
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+                        // Veritabanından gelen her kaydı ComboBox'a ekle
+                        while (reader.Read())
+                        {
+                            cmbKullanımSekli.Items.Add(reader.GetString(0));
+                        }
+                    }
+                }
+                using (OracleCommand command2 = new OracleCommand(sql2, connection))
+                {
+                    using (OracleDataReader reader = command2.ExecuteReader())
+                    {
+                        // Veritabanından gelen her kaydı ComboBox'a ekle
+                        while (reader.Read())
+                        {
+                            cmbKullanımPeriyodu.Items.Add(reader.GetString(0));
+                        }
+                    }
+                }
+
+                txtKacDoz.Text = "1";
+                txtKacKutu.Text = "1";
+                cmbKullanımPeriyodu.SelectedItem = "Gün";
+                cmbKullanımSekli.SelectedItem = "Ağızdan (Oral)";
+
+            }
         }
+
 
         private void LoadData()
         {
@@ -94,8 +141,38 @@ namespace PROJE
         }
         private void txtIlac_TextChanged(object sender, EventArgs e)
         {
-           LoadData();
+            LoadData();
+        }
+
+        private void cmbKullanımSekli_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void dataGridilacListesi_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridilacListesi_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Eğer başlık satırı tıklanmadıysa
+            if (e.RowIndex >= 0)
+            {
+                // Seçilen satırdaki verileri alıyoruz
+                string barkod = dataGridilacListesi.Rows[e.RowIndex].Cells[1].Value.ToString(); // Barkod
+                string ilacAdi = dataGridilacListesi.Rows[e.RowIndex].Cells[0].Value.ToString(); // İlac Adı
+
+                // TextBox'lara yazdırıyoruz
+                txtilacBarkod.Text = barkod;
+                txtilacAdi.Text = ilacAdi;
+            }
         }
     }
-}
+  }
+
+    
+ 
+
 

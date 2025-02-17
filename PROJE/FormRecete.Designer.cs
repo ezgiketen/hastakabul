@@ -35,12 +35,11 @@
             lblKacDoz = new Label();
             lblKullanımSekli = new Label();
             lblilacAcıklama = new Label();
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
-            comboBox3 = new ComboBox();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            cmbKullanımPeriyodu = new ComboBox();
+            cmbKullanımSekli = new ComboBox();
+            txtilacBarkod = new TextBox();
+            txtKacKutu = new TextBox();
+            txtKacDoz = new TextBox();
             textBox4 = new TextBox();
             button1 = new Button();
             button2 = new Button();
@@ -51,6 +50,8 @@
             txtIlac = new TextBox();
             dataGridHastaILac = new DataGridView();
             lblHastaİlaç = new Label();
+            lblilacAdı = new Label();
+            txtilacAdi = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dataGridilacListesi).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridHastaILac).BeginInit();
             SuspendLayout();
@@ -58,16 +59,17 @@
             // lblRecete
             // 
             lblRecete.AutoSize = true;
-            lblRecete.Location = new Point(22, 13);
+            lblRecete.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            lblRecete.Location = new Point(16, 25);
             lblRecete.Name = "lblRecete";
-            lblRecete.Size = new Size(98, 20);
+            lblRecete.Size = new Size(110, 23);
             lblRecete.TabIndex = 0;
             lblRecete.Text = "Reçete Bilgisi";
             // 
             // lblilac
             // 
             lblilac.AutoSize = true;
-            lblilac.Location = new Point(22, 94);
+            lblilac.Location = new Point(19, 129);
             lblilac.Name = "lblilac";
             lblilac.Size = new Size(95, 20);
             lblilac.TabIndex = 1;
@@ -76,7 +78,7 @@
             // lblKacKutu
             // 
             lblKacKutu.AutoSize = true;
-            lblKacKutu.Location = new Point(22, 133);
+            lblKacKutu.Location = new Point(19, 171);
             lblKacKutu.Name = "lblKacKutu";
             lblKacKutu.Size = new Size(67, 20);
             lblKacKutu.TabIndex = 2;
@@ -85,7 +87,7 @@
             // lblKullanımPeriyodu
             // 
             lblKullanımPeriyodu.AutoSize = true;
-            lblKullanımPeriyodu.Location = new Point(22, 176);
+            lblKullanımPeriyodu.Location = new Point(19, 214);
             lblKullanımPeriyodu.Name = "lblKullanımPeriyodu";
             lblKullanımPeriyodu.Size = new Size(128, 20);
             lblKullanımPeriyodu.TabIndex = 3;
@@ -94,7 +96,7 @@
             // lblKacDoz
             // 
             lblKacDoz.AutoSize = true;
-            lblKacDoz.Location = new Point(22, 221);
+            lblKacDoz.Location = new Point(19, 259);
             lblKacDoz.Name = "lblKacDoz";
             lblKacDoz.Size = new Size(64, 20);
             lblKacDoz.TabIndex = 4;
@@ -103,7 +105,7 @@
             // lblKullanımSekli
             // 
             lblKullanımSekli.AutoSize = true;
-            lblKullanımSekli.Location = new Point(22, 266);
+            lblKullanımSekli.Location = new Point(19, 304);
             lblKullanımSekli.Name = "lblKullanımSekli";
             lblKullanımSekli.Size = new Size(102, 20);
             lblKullanımSekli.TabIndex = 5;
@@ -112,68 +114,61 @@
             // lblilacAcıklama
             // 
             lblilacAcıklama.AutoSize = true;
-            lblilacAcıklama.Location = new Point(22, 309);
+            lblilacAcıklama.Location = new Point(19, 347);
             lblilacAcıklama.Name = "lblilacAcıklama";
             lblilacAcıklama.Size = new Size(111, 20);
             lblilacAcıklama.TabIndex = 6;
             lblilacAcıklama.Text = "İlaç Açıklaması ";
             // 
-            // comboBox1
+            // cmbKullanımPeriyodu
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(22, 36);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(514, 28);
-            comboBox1.TabIndex = 7;
+            cmbKullanımPeriyodu.FormattingEnabled = true;
+            cmbKullanımPeriyodu.Location = new Point(162, 211);
+            cmbKullanımPeriyodu.Name = "cmbKullanımPeriyodu";
+            cmbKullanımPeriyodu.Size = new Size(291, 28);
+            cmbKullanımPeriyodu.TabIndex = 8;
             // 
-            // comboBox2
+            // cmbKullanımSekli
             // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(165, 173);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(236, 28);
-            comboBox2.TabIndex = 8;
+            cmbKullanımSekli.FormattingEnabled = true;
+            cmbKullanımSekli.Location = new Point(162, 301);
+            cmbKullanımSekli.Name = "cmbKullanımSekli";
+            cmbKullanımSekli.Size = new Size(291, 28);
+            cmbKullanımSekli.TabIndex = 9;
+            cmbKullanımSekli.SelectedIndexChanged += cmbKullanımSekli_SelectedIndexChanged;
             // 
-            // comboBox3
+            // txtilacBarkod
             // 
-            comboBox3.FormattingEnabled = true;
-            comboBox3.Location = new Point(165, 258);
-            comboBox3.Name = "comboBox3";
-            comboBox3.Size = new Size(236, 28);
-            comboBox3.TabIndex = 9;
+            txtilacBarkod.Location = new Point(162, 126);
+            txtilacBarkod.Name = "txtilacBarkod";
+            txtilacBarkod.Size = new Size(291, 27);
+            txtilacBarkod.TabIndex = 10;
             // 
-            // textBox1
+            // txtKacKutu
             // 
-            textBox1.Location = new Point(165, 91);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(236, 27);
-            textBox1.TabIndex = 10;
+            txtKacKutu.Location = new Point(162, 168);
+            txtKacKutu.Name = "txtKacKutu";
+            txtKacKutu.Size = new Size(291, 27);
+            txtKacKutu.TabIndex = 11;
             // 
-            // textBox2
+            // txtKacDoz
             // 
-            textBox2.Location = new Point(165, 130);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(236, 27);
-            textBox2.TabIndex = 11;
-            // 
-            // textBox3
-            // 
-            textBox3.Location = new Point(165, 218);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(236, 27);
-            textBox3.TabIndex = 12;
+            txtKacDoz.Location = new Point(162, 256);
+            txtKacDoz.Name = "txtKacDoz";
+            txtKacDoz.Size = new Size(291, 27);
+            txtKacDoz.TabIndex = 12;
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(165, 302);
+            textBox4.Location = new Point(162, 340);
             textBox4.Multiline = true;
             textBox4.Name = "textBox4";
-            textBox4.Size = new Size(236, 86);
+            textBox4.Size = new Size(291, 79);
             textBox4.TabIndex = 13;
             // 
             // button1
             // 
-            button1.Location = new Point(12, 420);
+            button1.Location = new Point(9, 458);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 14;
@@ -182,7 +177,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(233, 420);
+            button2.Location = new Point(230, 458);
             button2.Name = "button2";
             button2.Size = new Size(110, 29);
             button2.TabIndex = 15;
@@ -191,7 +186,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(362, 420);
+            button3.Location = new Point(359, 458);
             button3.Name = "button3";
             button3.Size = new Size(94, 29);
             button3.TabIndex = 16;
@@ -200,7 +195,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(123, 420);
+            button4.Location = new Point(120, 458);
             button4.Name = "button4";
             button4.Size = new Size(94, 29);
             button4.TabIndex = 17;
@@ -210,9 +205,10 @@
             // lblilacListesi
             // 
             lblilacListesi.AutoSize = true;
+            lblilacListesi.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
             lblilacListesi.Location = new Point(847, 15);
             lblilacListesi.Name = "lblilacListesi";
-            lblilacListesi.Size = new Size(76, 20);
+            lblilacListesi.Size = new Size(86, 23);
             lblilacListesi.TabIndex = 18;
             lblilacListesi.Text = "İlaç Listesi";
             // 
@@ -225,6 +221,8 @@
             dataGridilacListesi.RowHeadersWidth = 51;
             dataGridilacListesi.Size = new Size(612, 367);
             dataGridilacListesi.TabIndex = 19;
+            dataGridilacListesi.CellClick += dataGridilacListesi_CellClick;
+            dataGridilacListesi.CellContentClick += dataGridilacListesi_CellContentClick;
             // 
             // txtIlac
             // 
@@ -253,11 +251,29 @@
             lblHastaİlaç.TabIndex = 22;
             lblHastaİlaç.Text = "Hasta İlaç";
             // 
+            // lblilacAdı
+            // 
+            lblilacAdı.AutoSize = true;
+            lblilacAdı.Location = new Point(19, 82);
+            lblilacAdı.Name = "lblilacAdı";
+            lblilacAdı.Size = new Size(59, 20);
+            lblilacAdı.TabIndex = 23;
+            lblilacAdı.Text = "İlaç Adı";
+            // 
+            // txtilacAdi
+            // 
+            txtilacAdi.Location = new Point(162, 79);
+            txtilacAdi.Name = "txtilacAdi";
+            txtilacAdi.Size = new Size(291, 27);
+            txtilacAdi.TabIndex = 24;
+            // 
             // FormRecete
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1494, 1038);
+            Controls.Add(txtilacAdi);
+            Controls.Add(lblilacAdı);
             Controls.Add(lblHastaİlaç);
             Controls.Add(dataGridHastaILac);
             Controls.Add(txtIlac);
@@ -268,12 +284,11 @@
             Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
-            Controls.Add(comboBox3);
-            Controls.Add(comboBox2);
-            Controls.Add(comboBox1);
+            Controls.Add(txtKacDoz);
+            Controls.Add(txtKacKutu);
+            Controls.Add(txtilacBarkod);
+            Controls.Add(cmbKullanımSekli);
+            Controls.Add(cmbKullanımPeriyodu);
             Controls.Add(lblilacAcıklama);
             Controls.Add(lblKullanımSekli);
             Controls.Add(lblKacDoz);
@@ -299,12 +314,11 @@
         private Label lblKacDoz;
         private Label lblKullanımSekli;
         private Label lblilacAcıklama;
-        private ComboBox comboBox1;
-        private ComboBox comboBox2;
-        private ComboBox comboBox3;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private ComboBox cmbKullanımPeriyodu;
+        private ComboBox cmbKullanımSekli;
+        private TextBox txtilacBarkod;
+        private TextBox txtKacKutu;
+        private TextBox txtKacDoz;
         private TextBox textBox4;
         private Button button1;
         private Button button2;
@@ -315,5 +329,7 @@
         private TextBox txtIlac;
         private DataGridView dataGridHastaILac;
         private Label lblHastaİlaç;
+        private Label lblilacAdı;
+        private TextBox txtilacAdi;
     }
 }
