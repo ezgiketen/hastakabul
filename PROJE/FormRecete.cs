@@ -21,6 +21,47 @@ namespace PROJE
 
         private void FormRecete_Load(object sender, EventArgs e)
         {
+            /*
+              OracleDbHelper dbHelper = new OracleDbHelper();
+
+            using (OracleConnection connection = dbHelper.GetConnection())
+            {
+                connection.Open();
+
+                string sql = "INSERT INTO HASTANE.RECETELER (RECETE_ID ,TARIH, ILAC_ID, BARKOD, KAC_KUTU, KULLANIM_SEKLI, KULLANIM_PERIYODU, KAC_DOZ, ACIKLAMA  " +
+                                    "VALUES (KIMSEQ.NEXTVAL ,:TARIH, :ILAC_ID ,:BARKOD, :KAC_KUTU , :KULLANIM_SEKLI , :KULLANIM_PERIYODU ,:KAC_DOZ ,:ACIKLAMA)";
+
+
+                using (OracleCommand command = new OracleCommand(sql, connection))
+                {
+
+                    // command.Parameters.Add(":TC_KIMLIK_NO", OracleDbType.Int64).Value = tcKimlikNo;
+
+                    command.Parameters.Add(":TARIH", OracleDbType.Int64).Value = ta;
+
+                    if (string.IsNullOrEmpty(cmbKurumAdi.Text))
+                    {
+
+                        MessageBox.Show("Hasta adı boş kalamaz");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":ADI", OracleDbType.Varchar2).Value = txtAdi.Text;
+                    }
+
+*/
+         
+
+
+
+
+
+
+
+
+
             LoadData();
 
             OracleDbHelper dbHelper = new OracleDbHelper();
@@ -116,9 +157,6 @@ namespace PROJE
 
                             dataGridilacListesi.Columns[4].HeaderText = "TEK DOZ BIRIM";
                             dataGridilacListesi.Columns[4].DataPropertyName = "TEKDOZ_MIKTARI";
-
-
-
                         }
 
                         for (int i = 0; i < dataGridilacListesi.Rows.Count; i++)
@@ -136,8 +174,6 @@ namespace PROJE
                     }
                 }
             }
-
-
         }
         private void txtIlac_TextChanged(object sender, EventArgs e)
         {

@@ -397,7 +397,7 @@
             // btnGuncelle
             // 
             btnGuncelle.ForeColor = Color.FromArgb(0, 49, 83);
-            btnGuncelle.Location = new Point(498, 814);
+            btnGuncelle.Location = new Point(501, 793);
             btnGuncelle.Name = "btnGuncelle";
             btnGuncelle.Size = new Size(106, 29);
             btnGuncelle.TabIndex = 35;
@@ -541,7 +541,7 @@
             // btnKaydet
             // 
             btnKaydet.ForeColor = Color.FromArgb(0, 49, 83);
-            btnKaydet.Location = new Point(498, 814);
+            btnKaydet.Location = new Point(468, 827);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(106, 29);
             btnKaydet.TabIndex = 22;
@@ -799,7 +799,7 @@
             groupBoxHastaBilgi.Controls.Add(lblBilgiCepTel);
             groupBoxHastaBilgi.Controls.Add(lblBilgiYas);
             groupBoxHastaBilgi.Font = new Font("Segoe UI", 10.2F);
-            groupBoxHastaBilgi.Location = new Point(264, 103);
+            groupBoxHastaBilgi.Location = new Point(264, 92);
             groupBoxHastaBilgi.Name = "groupBoxHastaBilgi";
             groupBoxHastaBilgi.Size = new Size(680, 929);
             groupBoxHastaBilgi.TabIndex = 3;

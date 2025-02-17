@@ -157,23 +157,64 @@ namespace PROJE
         private void btnHesapAc_Click(object sender, EventArgs e)
         {
 
+            OracleDbHelper dbHelper = new OracleDbHelper();
+
+            using (OracleConnection connection = dbHelper.GetConnection())
+            {
+                connection.Open();
+
+                string sql = "INSERT INTO HASTANE.PROTOKOL (PROTOKOL_NO ,GTARIH, KURUM_NO, BOLUM, DR_KODU  " +
+                                    "VALUES (KIMSEQ.NEXTVAL ,:GTARIH, :KURUM_NO ,:BOLUM, :DR_KODU)";
 
 
+                using (OracleCommand command = new OracleCommand(sql, connection))
+                {
 
+                    // command.Parameters.Add(":TC_KIMLIK_NO", OracleDbType.Int64).Value = tcKimlikNo;
 
+                    if (string.IsNullOrEmpty(dateTimePicker1.Text))
+                    {
+                        MessageBox.Show("Tarih boş kalamaz");
+                        return;
+                    }
+                    else
+                    {
+                        DateTime selectedDate = dateTimePicker1.Value;
+                        command.Parameters.Add(":GTARIH", OracleDbType.Date).Value = selectedDate;
+                    }
 
+                    if (string.IsNullOrEmpty(cmbKurumAdi.Text))
+                    {
+                        MessageBox.Show("Kurum adı boş kalamaz");
+                        return;
+                    }
+                    else
+                    {
+                        command.Parameters.Add(":KURUM_NO", OracleDbType.Date).Value = cmbKurumAdi;
+                    }
 
+                    if (string.IsNullOrEmpty(cmbBolum.Text))
+                    {
+                        MessageBox.Show("lütfen bölüm seçin");
+                        return;
+                    }
+                    else
+                    {
+                        command.Parameters.Add(":BOLUM", OracleDbType.Date).Value = cmbBolum;
+                    }
 
+                    if (string.IsNullOrEmpty(cmbDr.Text))
+                    {
+                        MessageBox.Show("lütfen doktor seçin");
+                        return;
+                    }
+                    else
+                    {
+                        command.Parameters.Add(":DR_KODU", OracleDbType.Date).Value = cmbDr;
+                    }
 
-
-
-
-
-
-
-
-
-
+                }
+            }
         }
     }
 }
