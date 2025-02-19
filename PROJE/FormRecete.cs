@@ -14,56 +14,27 @@ namespace PROJE
 {
     public partial class FormRecete : Form
     {
-        public FormRecete()
+        private string hastaTC;
+        private string hastaAdi;
+        private string hastaSoyadi;
+
+
+        public FormRecete(string tc, string ad, string soyad)
         {
             InitializeComponent();
+            hastaTC = tc;
+            hastaAdi = ad;
+            hastaSoyadi = soyad;
         }
 
         private void FormRecete_Load(object sender, EventArgs e)
         {
-            /*
-              OracleDbHelper dbHelper = new OracleDbHelper();
-
-            using (OracleConnection connection = dbHelper.GetConnection())
-            {
-                connection.Open();
-
-                string sql = "INSERT INTO HASTANE.RECETELER (RECETE_ID ,TARIH, ILAC_ID, BARKOD, KAC_KUTU, KULLANIM_SEKLI, KULLANIM_PERIYODU, KAC_DOZ, ACIKLAMA  " +
-                                    "VALUES (KIMSEQ.NEXTVAL ,:TARIH, :ILAC_ID ,:BARKOD, :KAC_KUTU , :KULLANIM_SEKLI , :KULLANIM_PERIYODU ,:KAC_DOZ ,:ACIKLAMA)";
-
-
-                using (OracleCommand command = new OracleCommand(sql, connection))
-                {
-
-                    // command.Parameters.Add(":TC_KIMLIK_NO", OracleDbType.Int64).Value = tcKimlikNo;
-
-                    command.Parameters.Add(":TARIH", OracleDbType.Int64).Value = ta;
-
-                    if (string.IsNullOrEmpty(cmbKurumAdi.Text))
-                    {
-
-                        MessageBox.Show("Hasta adı boş kalamaz");
-                        return;
-                    }
-
-                    else
-                    {
-                        command.Parameters.Add(":ADI", OracleDbType.Varchar2).Value = txtAdi.Text;
-                    }
-
-*/
-         
-
-
-
-
-
-
-
-
 
             LoadData();
 
+            lblTcAl.Text = hastaTC;
+            lblAdYazdır.Text = hastaAdi + hastaSoyadi;
+          
             OracleDbHelper dbHelper = new OracleDbHelper();
 
             using (OracleConnection connection = dbHelper.GetConnection())
@@ -107,6 +78,7 @@ namespace PROJE
                 txtKacKutu.Text = "1";
                 cmbKullanımPeriyodu.SelectedItem = "Gün";
                 cmbKullanımSekli.SelectedItem = "Ağızdan (Oral)";
+
 
             }
         }
@@ -205,8 +177,122 @@ namespace PROJE
                 txtilacAdi.Text = ilacAdi;
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+
+         
+
+            if (string.IsNullOrEmpty(hastaTC))
+            {
+                MessageBox.Show("Lütfen önce bir hasta seçin!", "Uyarı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            OracleDbHelper dbHelper = new OracleDbHelper();
+
+            using (OracleConnection connection = dbHelper.GetConnection())
+            {
+                connection.Open();
+
+                string sql = "INSERT INTO HASTANE.RECETELER (RECETE_ID ,TARIH, ILAC_ADI, BARKOD, KAC_KUTU, KULLANIM_SEKLI, KULLANIM_PERIYODU, KAC_DOZ, ACIKLAMA)  " +
+                                    "VALUES (ilac_seq.NEXTVAL ,:TARIH, :ILAC_ADI ,:BARKOD, :KAC_KUTU , :KULLANIM_SEKLI , :KULLANIM_PERIYODU ,:KAC_DOZ ,:ACIKLAMA)";
+
+
+                using (OracleCommand command = new OracleCommand(sql, connection))
+                {
+
+                    // command.Parameters.Add(":TC_KIMLIK_NO", OracleDbType.Int64).Value = tcKimlikNo;
+
+                    if (string.IsNullOrEmpty(txtilacAdi.Text))
+                    {
+
+                        MessageBox.Show("İlaç adı boş kalamaz");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":ILAC_ADI", OracleDbType.Varchar2).Value = txtilacAdi.Text;
+                    }
+
+
+                    if (string.IsNullOrEmpty(txtilacBarkod.Text))
+                    {
+
+                        MessageBox.Show("Barkod boş kalamaz");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":BARKOD", OracleDbType.Varchar2).Value = txtilacBarkod.Text;
+                    }
+
+
+
+                    if (string.IsNullOrEmpty(txtKacKutu.Text))
+                    {
+
+                        MessageBox.Show("Kaç kutu olduğunu belirtin");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":KAC_KUTU", OracleDbType.Varchar2).Value = txtKacKutu.Text;
+                    }
+
+
+                    if (string.IsNullOrEmpty(cmbKullanımPeriyodu.Text))
+                    {
+
+                        MessageBox.Show("Kullanım periyodunu belirtin");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":KULLANIM_PERIYODU", OracleDbType.Varchar2).Value = cmbKullanımPeriyodu.Text;
+                    }
+
+
+                    if (string.IsNullOrEmpty(txtKacDoz.Text))
+                    {
+
+                        MessageBox.Show("Kaç doz olduğunu belirtin");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":KAC_DOZ", OracleDbType.Varchar2).Value = txtKacDoz.Text;
+                    }
+
+
+                    if (string.IsNullOrEmpty(cmbKullanımSekli.Text))
+                    {
+
+                        MessageBox.Show("Kullanım şeklini belirtin");
+                        return;
+                    }
+
+                    else
+                    {
+                        command.Parameters.Add(":KULLANIM_SEKLI", OracleDbType.Varchar2).Value = cmbKullanımSekli.Text;
+                    }
+
+
+                    command.Parameters.Add(":ACIKLAMA", OracleDbType.Varchar2).Value = txtAciklama.Text;
+
+
+
+                }
+            }
+        }
     }
-  }
+}
 
     
  

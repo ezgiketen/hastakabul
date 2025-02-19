@@ -15,13 +15,20 @@ namespace PROJE
 {
     public partial class FormYeniTakip : Form
     {
-        public FormYeniTakip()
+        private string dosyaNumarasi;
+
+        public FormYeniTakip(string dosyaNo)
         {
             InitializeComponent();
+            dosyaNumarasi = dosyaNo;
+
         }
 
         private void FormYeniTakip_Load(object sender, EventArgs e)
         {
+
+            Console.WriteLine(dosyaNumarasi);
+
             OracleDbHelper dbHelper = new OracleDbHelper();
 
             using (OracleConnection conn = dbHelper.GetConnection())
@@ -90,61 +97,46 @@ namespace PROJE
 
             cmbDr.Items.Clear();
 
-
-            string selectedBolumAdi = cmbBolum.SelectedItem.ToString();
-
-
             using (OracleConnection connection = dbHelper.GetConnection())
             {
                 connection.Open();
 
-
+                string bolum = cmbBolum.SelectedItem.ToString();
                 string sql2 = "SELECT BOLUM FROM HASTANE.BOLUM WHERE BOLUM_ADI = :BOLUM_ADI";
                 using (OracleCommand command = new OracleCommand(sql2, connection))
                 {
-                    command.Parameters.Add(new OracleParameter("BOLUM_ADI", selectedBolumAdi));
-
+                  
+                    command.Parameters.Add(new OracleParameter("BOLUM_ADI", OracleDbType.Varchar2)).Value = bolum;
+                  
                     using (OracleDataReader reader = command.ExecuteReader())
                     {
-                        if (reader.Read())
-                        {
-                            string bolumKodu = reader["BOLUM"].ToString();
 
+                        while (reader.Read())
+                        {
+                            int bolumKodu = Convert.ToInt32(reader["BOLUM"]);
 
                             string sql3 = "SELECT ADI_SOYADI FROM HASTANE.DRADI WHERE BOLUM = :BOLUM";
                             using (OracleCommand command2 = new OracleCommand(sql3, connection))
                             {
-                                command2.Parameters.Add(new OracleParameter("BOLUM", bolumKodu));
-
+                           
+                                command2.Parameters.Add(new OracleParameter("BOLUM", OracleDbType.Int32)).Value = bolumKodu;
                                 using (OracleDataReader reader2 = command2.ExecuteReader())
                                 {
-
-                                    bool doktorBulundu = false;
                                     while (reader2.Read())
                                     {
-                                        doktorBulundu = true;
-                                        string doktorAdi = reader2["ADI_SOYADI"].ToString();
-                                        cmbDr.Items.Add(doktorAdi);
+                                        string drAdi = reader2["ADI_SOYADI"].ToString();
+
+                                        cmbDr.Items.Add(drAdi);
                                     }
 
-
-                                    if (!doktorBulundu)
-                                    {
-                                        MessageBox.Show("Seçilen bölüme ait doktor bulunamadı.");
-                                    }
                                 }
                             }
                         }
-                        else
-                        {
-                            MessageBox.Show("Seçilen bölüme ait kayıt bulunamadı.");
-                        }
+
                     }
                 }
             }
         }
-
-
         private void cmbDr_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
@@ -156,21 +148,19 @@ namespace PROJE
 
         private void btnHesapAc_Click(object sender, EventArgs e)
         {
-
-            OracleDbHelper dbHelper = new OracleDbHelper();
+            
+                OracleDbHelper dbHelper = new OracleDbHelper();
 
             using (OracleConnection connection = dbHelper.GetConnection())
             {
                 connection.Open();
 
-                string sql = "INSERT INTO HASTANE.PROTOKOL (PROTOKOL_NO ,GTARIH, KURUM_NO, BOLUM, DR_KODU  " +
-                                    "VALUES (KIMSEQ.NEXTVAL ,:GTARIH, :KURUM_NO ,:BOLUM, :DR_KODU)";
+                string sql = "INSERT INTO HASTANE.PROTOKOL (PROTOKOL_NO ,GTARIH, KURUM_NO, BOLUM, DR_KODU, DOSYA_NO) " +
+                                    "VALUES (KIMSEQ.NEXTVAL ,:GTARIH, :KURUM_NO ,:BOLUM, :DR_KODU, :DOSYA_NO)";
 
 
                 using (OracleCommand command = new OracleCommand(sql, connection))
                 {
-
-                    // command.Parameters.Add(":TC_KIMLIK_NO", OracleDbType.Int64).Value = tcKimlikNo;
 
                     if (string.IsNullOrEmpty(dateTimePicker1.Text))
                     {
@@ -190,7 +180,7 @@ namespace PROJE
                     }
                     else
                     {
-                        command.Parameters.Add(":KURUM_NO", OracleDbType.Date).Value = cmbKurumAdi;
+                        command.Parameters.Add(":KURUM_NO", OracleDbType.Varchar2).Value = (cmbKurumAdi.SelectedIndex);
                     }
 
                     if (string.IsNullOrEmpty(cmbBolum.Text))
@@ -200,7 +190,8 @@ namespace PROJE
                     }
                     else
                     {
-                        command.Parameters.Add(":BOLUM", OracleDbType.Date).Value = cmbBolum;
+                        command.Parameters.Add(":BOLUM", OracleDbType.Int32).Value = (cmbBolum.SelectedIndex);
+
                     }
 
                     if (string.IsNullOrEmpty(cmbDr.Text))
@@ -210,11 +201,32 @@ namespace PROJE
                     }
                     else
                     {
-                        command.Parameters.Add(":DR_KODU", OracleDbType.Date).Value = cmbDr;
+                        command.Parameters.Add(":DR_KODU", OracleDbType.Int32).Value = (cmbDr.SelectedIndex);
                     }
 
+                    // DOSYA_NO parametresini Form1'den gelen dosya numarasına göre ekliyoruz
+                    if (!string.IsNullOrEmpty(dosyaNumarasi)) // Dosya numarasının boş olmaması kontrolü
+                    {
+                        command.Parameters.Add(":DOSYA_NO", OracleDbType.Varchar2).Value = dosyaNumarasi; // Dosya numarasını veritabanına ekliyoruz
+                    }
+                    else
+                    {
+                        MessageBox.Show("Dosya numarası eksik!");
+                        return;
+                    }
+
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                        MessageBox.Show("Kişi başarıyla kaydedildi.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Hata: " + ex.Message);
+                    }
                 }
+              }
             }
         }
     }
-}

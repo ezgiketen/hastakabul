@@ -388,7 +388,7 @@
             groupBoxKimlik.Controls.Add(lblSoyadı);
             groupBoxKimlik.Controls.Add(lblTc);
             groupBoxKimlik.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            groupBoxKimlik.Location = new Point(264, 103);
+            groupBoxKimlik.Location = new Point(252, 92);
             groupBoxKimlik.Name = "groupBoxKimlik";
             groupBoxKimlik.Size = new Size(680, 907);
             groupBoxKimlik.TabIndex = 2;
@@ -420,6 +420,7 @@
             comboBox4.Name = "comboBox4";
             comboBox4.Size = new Size(161, 28);
             comboBox4.TabIndex = 33;
+            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
             // 
             // comboBox3
             // 
@@ -799,7 +800,7 @@
             groupBoxHastaBilgi.Controls.Add(lblBilgiCepTel);
             groupBoxHastaBilgi.Controls.Add(lblBilgiYas);
             groupBoxHastaBilgi.Font = new Font("Segoe UI", 10.2F);
-            groupBoxHastaBilgi.Location = new Point(264, 92);
+            groupBoxHastaBilgi.Location = new Point(264, 128);
             groupBoxHastaBilgi.Name = "groupBoxHastaBilgi";
             groupBoxHastaBilgi.Size = new Size(680, 929);
             groupBoxHastaBilgi.TabIndex = 3;
@@ -1485,7 +1486,7 @@
             // 
             dataGridView1.BackgroundColor = Color.FromArgb(242, 248, 251);
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(978, 103);
+            dataGridView1.Location = new Point(964, 92);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(877, 929);
@@ -1499,10 +1500,10 @@
             BackColor = Color.White;
             ClientSize = new Size(1924, 1055);
             Controls.Add(groupBoxKimlik);
+            Controls.Add(groupBoxHastaBilgi);
             Controls.Add(dataGridView1);
             Controls.Add(sideBar);
             Controls.Add(flowPanelUst);
-            Controls.Add(groupBoxHastaBilgi);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";

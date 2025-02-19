@@ -111,7 +111,7 @@
             cmbDr.Name = "cmbDr";
             cmbDr.Size = new Size(267, 28);
             cmbDr.TabIndex = 7;
-            cmbDr.SelectedIndexChanged += cmbDr_SelectedIndexChanged;
+
             // 
             // dateTimePicker1
             // 

@@ -33,6 +33,13 @@ namespace PROJE
 
 
         }
+        // lblDosyaNoo'yu dýþarýya eriþilebilir yapmak için bir property ekleyin
+        public string DosyaNo
+        {
+            get { return lblDosyaNoo.Text; }
+            set { lblDosyaNoo.Text = value; }
+        }
+
         private bool menuExpandHasta = false;
         private bool menuExpandHemsire = false;
         private bool menuExpandDoktor = false;
@@ -1183,8 +1190,11 @@ namespace PROJE
 
         private void button2_Click(object sender, EventArgs e)
         {
-            FormYeniTakip formYeniTakip = new FormYeniTakip();
-            formYeniTakip.Show();
+
+            string dosyaNo = lblDosyaNoo.Text;
+            FormYeniTakip yeniTakipFormu = new FormYeniTakip(dosyaNo); // Parametreli constructor ile açýyoruz
+            yeniTakipFormu.ShowDialog();
+
         }
 
         private void flowPanelHastaTrans_Tick(object sender, EventArgs e)
@@ -1354,8 +1364,15 @@ namespace PROJE
 
         private void btnRecete_Click(object sender, EventArgs e)
         {
-            FormRecete formRecete = new FormRecete();
-            formRecete.Show();
+
+            FormRecete receteForm = new FormRecete(lblTCbilgi.Text, lblAdBilgi.Text, lblSoyadBilgi.Text);
+            receteForm.Show();
+
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
