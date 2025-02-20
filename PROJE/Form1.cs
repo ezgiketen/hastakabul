@@ -97,6 +97,10 @@ namespace PROJE
                 }
             }
 
+            //enter tuþu için
+            this.KeyPreview = true;
+
+            this.KeyDown += new KeyEventHandler(Form1_KeyDown);
 
             // Form ayarlarý
             this.WindowState = FormWindowState.Maximized;
@@ -283,6 +287,7 @@ namespace PROJE
         private void btnAra_Click_1(object sender, EventArgs e)
         {
 
+
             if (string.IsNullOrEmpty(txtTCArama.Text) && string.IsNullOrEmpty(txtAdýArama.Text))
             {
                 MessageBox.Show("Lütfen TC Kimlik No veya Ad-Soyad Giriniz.");
@@ -301,13 +306,13 @@ namespace PROJE
             using (OracleConnection conn = dbHelper.GetConnection())
             {
 
-                try
+
                 {
                     conn.Open();
                     string sql = "SELECT * FROM HASTANE.KIMLIK WHERE TC_KIMLIK_NO=:TC OR ADI= :AD AND SOYADI =:SOYAD ";
 
 
-                    try
+
                     {
 
                         using (OracleCommand command = new OracleCommand(sql, conn))
@@ -549,82 +554,14 @@ namespace PROJE
                         }
 
 
-                        string sql2 = "SELECT k.DOSYA_NO, p.PROTOKOL_NO, p.GTARIH, b.BOLUM_ADI, i.ODENEN, i.KALAN FROM HASTANE.KIMLIK k ,HASTANE.PROTOKOL p  ,HASTANE.BOLUM b ,HASTANE.ISLEMYAP i" +
-                   " WHERE p.dosya_no = k.dosya_no(+) AND p.bolum = b.bolum(+) AND p.protokol_no = i.protokol_no(+) AND k.TC_KIMLIK_NO = :TC";
-
-
-
-                        using (OracleCommand cmd = new OracleCommand(sql2, conn))
-                        {
-                            // Parametreyi ekleyerek TC Kimlik No'ya göre filtreleme yapýyoruz
-                            cmd.Parameters.Add(new OracleParameter("TC", txtTCArama.Text));
-
-
-                            using (OracleDataAdapter adapter = new OracleDataAdapter(cmd))
-                            {
-
-                                DataTable dataTable = new DataTable();
-                                adapter.Fill(dataTable);
-
-                                int rowsAffected = adapter.Fill(dataTable);
-
-                                dataGridView1.DataSource = dataTable;
-                                dataGridView1.AllowUserToAddRows = false;
-                                dataGridView1.RowHeadersVisible = false;
-
-                                dataGridView1.DefaultCellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.BackColor;
-                                dataGridView1.DefaultCellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.ForeColor;
-
-                                // Satýrýn index'ine göre renk atama
-                                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                                {
-                                    if (i % 2 == 0) // Çift satýrlar
-                                    {
-                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#fbf2fb");
-                                    }
-                                    else // Tek satýrlar
-                                    {
-                                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#f8fbf2");
-                                    }
-
-
-                                    if (dataTable.Columns.Count > 0)
-                                    {
-                                        dataGridView1.Columns[0].HeaderText = "PROTOKOL"; //Kolon Baþlýðýný Deðiþtirme
-                                        dataGridView1.Columns[0].DataPropertyName = "PROTOKOL_NO"; //Kolonu Bir Data Kaynaðýna Baðlama
-
-                                        dataGridView1.Columns[1].HeaderText = "DOSYA NO";
-                                        dataGridView1.Columns[1].DataPropertyName = "DOSYA_NO";
-
-                                        dataGridView1.Columns[2].HeaderText = "GELIS TARIHI";
-                                        dataGridView1.Columns[2].DataPropertyName = "GTARIH";
-                                        dataGridView1.Columns[2].DefaultCellStyle.Format = "dd-MM-yyyy";
-
-                                        dataGridView1.Columns[3].HeaderText = "POLIKINLIK";
-                                        dataGridView1.Columns[3].DataPropertyName = "BOLUM_ADI";
-
-                                        dataGridView1.Columns[4].HeaderText = "ÖDENEN";
-                                        dataGridView1.Columns[4].DataPropertyName = "ODENEN";
-
-                                        dataGridView1.Columns[5].HeaderText = "KALAN";
-                                        dataGridView1.Columns[5].DataPropertyName = "KALAN";
-
-                                    }
-                                }
-                            }
-
-                        }
+                        FillDataGridView(txtTCArama.Text);
 
                     }
-                    catch (Exception ex) { MessageBox.Show(ex.Message); return; }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("hata : " + ex.Message);
-                }
-
             }
         }
+
+
 
         private void cmbTema_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1373,6 +1310,128 @@ namespace PROJE
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)  // Enter tuþuna basýldýðýnda
+            {
+                btnAra_Click_1(sender, e); // Ara butonunun click olayýný çaðýr
+                e.SuppressKeyPress = true; // Enter tuþunun formda baþka bir etki yaratmasýný engelle
+            }
+        }
+        private void FillDataGridView(string tcKimlikNo)
+        {
+
+            OracleDbHelper dbHelper = new OracleDbHelper();
+            {
+                using (OracleConnection conn = dbHelper.GetConnection())
+                {
+                    conn.Open();
+
+                    string sql2 = "SELECT k.DOSYA_NO, p.PROTOKOL_NO, p.GTARIH, b.BOLUM_ADI, i.ODENEN, i.KALAN, d.ADI_SOYADI " +
+                          "FROM HASTANE.KIMLIK k, HASTANE.PROTOKOL p, HASTANE.BOLUM b, HASTANE.ISLEMYAP i, HASTANE.DRADI d " +
+                          "WHERE p.dosya_no = k.dosya_no(+) " +
+                          "AND p.bolum = b.bolum(+) " +
+                          "AND p.protokol_no = i.protokol_no(+) " +
+                          "AND d.bolum = b.bolum " +
+                          "AND k.TC_KIMLIK_NO = :TC";
+
+                    using (OracleCommand cmd = new OracleCommand(sql2, conn))
+                    {
+                        cmd.Parameters.Add(new OracleParameter("TC", tcKimlikNo));
+
+                        using (OracleDataAdapter adapter = new OracleDataAdapter(cmd))
+                        {
+                            DataTable dataTable = new DataTable();
+                            adapter.Fill(dataTable);
+
+                            decimal toplamOdenen = 0;
+                            decimal toplamKalan = 0;
+
+                            foreach (DataRow row in dataTable.Rows)
+                            {
+                                if (!Convert.IsDBNull(row["ODENEN"]))
+                                    toplamOdenen += Convert.ToDecimal(row["ODENEN"]);
+
+                                if (!Convert.IsDBNull(row["KALAN"]))
+                                    toplamKalan += Convert.ToDecimal(row["KALAN"]);
+                            }
+
+                            DataRow baslikRow = dataTable.NewRow();
+                            baslikRow["ODENEN"] = DBNull.Value;
+                            baslikRow["KALAN"] = DBNull.Value;
+
+                            dataTable.Rows.Add(baslikRow); // Baþlýk satýrýný ekle
+
+                            DataRow toplamRow = dataTable.NewRow();
+                            toplamRow["ODENEN"] = toplamOdenen;
+                            toplamRow["KALAN"] = toplamKalan;
+
+                            dataTable.Rows.Add(toplamRow); // Yeni satýrý ekle
+
+                            dataGridView1.DataSource = dataTable;
+                            dataGridView1.AllowUserToAddRows = false;
+                            dataGridView1.RowHeadersVisible = false;
+
+                            dataGridView1.DefaultCellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.BackColor;
+                            dataGridView1.DefaultCellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.ForeColor;
+
+                            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                            {
+                                if (i % 2 == 0)
+                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#fbf2fb");
+                                else
+                                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#f8fbf2");
+
+                                if (dataTable.Columns.Count > 0)
+                                {
+                                    dataGridView1.Columns[0].HeaderText = "PROTOKOL";
+                                    dataGridView1.Columns[0].DataPropertyName = "PROTOKOL_NO";
+
+                                    dataGridView1.Columns[1].HeaderText = "DOSYA NO";
+                                    dataGridView1.Columns[1].DataPropertyName = "DOSYA_NO";
+
+                                    dataGridView1.Columns[2].HeaderText = "GELIS TARIHI";
+                                    dataGridView1.Columns[2].DataPropertyName = "GTARIH";
+                                    dataGridView1.Columns[2].DefaultCellStyle.Format = "dd-MM-yyyy";
+
+                                    dataGridView1.Columns[3].HeaderText = "POLIKINLIK";
+                                    dataGridView1.Columns[3].DataPropertyName = "BOLUM_ADI";
+
+                                    dataGridView1.Columns[4].HeaderText = "DOKTOR ADI";
+                                    dataGridView1.Columns[4].DataPropertyName = "ADI_SOYADI";
+
+                                    dataGridView1.Columns[5].HeaderText = "ÖDENEN";
+                                    dataGridView1.Columns[5].DataPropertyName = "ODENEN";
+
+                                    dataGridView1.Columns[6].HeaderText = "KALAN";
+                                    dataGridView1.Columns[6].DataPropertyName = "KALAN";
+                                }
+                            }
+
+                            // Kolon sýralamalarýný sabitle
+                            dataGridView1.Columns[0].DisplayIndex = 0;
+                            dataGridView1.Columns[1].DisplayIndex = 1;
+                            dataGridView1.Columns[2].DisplayIndex = 2;
+                            dataGridView1.Columns[3].DisplayIndex = 3;
+                            dataGridView1.Columns[4].DisplayIndex = 4;
+                            dataGridView1.Columns[5].DisplayIndex = 5;
+                            dataGridView1.Columns[6].DisplayIndex = 6;
+
+                            // Kolon geniþlikleri
+                            dataGridView1.Columns[0].Width = 90;
+                            dataGridView1.Columns[1].Width = 70;
+                            dataGridView1.Columns[2].Width = 100;
+                            dataGridView1.Columns[3].Width = 230;
+                            dataGridView1.Columns[4].Width = 210;
+                            dataGridView1.Columns[5].Width = 80;
+                            dataGridView1.Columns[6].Width = 70;
+                        }
+                    }
+                }
+
+            }
         }
     }
 }

@@ -9,16 +9,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PROJE
 {
     public partial class FormYeniTakip : Form
     {
+        int bolumKodu;
+        int kurumKodu;
+        string drAdi;
+        int drKodu;
+
         private string dosyaNumarasi;
+
 
         public FormYeniTakip(string dosyaNo)
         {
+
             InitializeComponent();
             dosyaNumarasi = dosyaNo;
 
@@ -79,13 +87,26 @@ namespace PROJE
             using (OracleConnection connection = dbHelper.GetConnection())
             {
                 connection.Open();
-                string kurumAdi = cmbKurumAdi.SelectedItem.ToString();
-
-                // Parametreli sorgu
-                string sql = "SELECT KODU FROM HASTANE.KURUM WHERE KURUM_ADI = :KURUM";
+                string kurum = cmbKurumAdi.SelectedItem.ToString();
+                string sql = "SELECT KURUM_NO FROM HASTANE.KURUM WHERE KURUM_ADI = :KURUM_ADI";
                 using (OracleCommand command = new OracleCommand(sql, connection))
                 {
-                    command.Parameters.Add(new OracleParameter(":KURUM", OracleDbType.Varchar2)).Value = kurumAdi;
+
+                    command.Parameters.Add(new OracleParameter(":KURUM_ADI", OracleDbType.Varchar2)).Value = kurum;
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+
+                        if (reader.Read())
+                        {
+                            kurumKodu = Convert.ToInt32(reader["KURUM_NO"]);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Seçilen kurum için kayıt bulunamadı.");
+                        }
+
+                    }
                 }
             }
         }
@@ -105,41 +126,39 @@ namespace PROJE
                 string sql2 = "SELECT BOLUM FROM HASTANE.BOLUM WHERE BOLUM_ADI = :BOLUM_ADI";
                 using (OracleCommand command = new OracleCommand(sql2, connection))
                 {
-                  
                     command.Parameters.Add(new OracleParameter("BOLUM_ADI", OracleDbType.Varchar2)).Value = bolum;
-                  
+
                     using (OracleDataReader reader = command.ExecuteReader())
                     {
 
                         while (reader.Read())
                         {
-                            int bolumKodu = Convert.ToInt32(reader["BOLUM"]);
+                            bolumKodu = Convert.ToInt32(reader["BOLUM"]);
 
                             string sql3 = "SELECT ADI_SOYADI FROM HASTANE.DRADI WHERE BOLUM = :BOLUM";
+
+
                             using (OracleCommand command2 = new OracleCommand(sql3, connection))
                             {
-                           
                                 command2.Parameters.Add(new OracleParameter("BOLUM", OracleDbType.Int32)).Value = bolumKodu;
+
                                 using (OracleDataReader reader2 = command2.ExecuteReader())
                                 {
                                     while (reader2.Read())
                                     {
-                                        string drAdi = reader2["ADI_SOYADI"].ToString();
+
+                                        drAdi = reader2["ADI_SOYADI"].ToString();
 
                                         cmbDr.Items.Add(drAdi);
                                     }
-
                                 }
                             }
                         }
-
                     }
                 }
             }
         }
-        private void cmbDr_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
+
 
         private void cmbBolum_Click(object sender, EventArgs e)
         {
@@ -148,8 +167,8 @@ namespace PROJE
 
         private void btnHesapAc_Click(object sender, EventArgs e)
         {
-            
-                OracleDbHelper dbHelper = new OracleDbHelper();
+
+            OracleDbHelper dbHelper = new OracleDbHelper();
 
             using (OracleConnection connection = dbHelper.GetConnection())
             {
@@ -180,7 +199,7 @@ namespace PROJE
                     }
                     else
                     {
-                        command.Parameters.Add(":KURUM_NO", OracleDbType.Varchar2).Value = (cmbKurumAdi.SelectedIndex);
+                        command.Parameters.Add(":KURUM_NO", OracleDbType.Int32).Value = kurumKodu;
                     }
 
                     if (string.IsNullOrEmpty(cmbBolum.Text))
@@ -190,7 +209,7 @@ namespace PROJE
                     }
                     else
                     {
-                        command.Parameters.Add(":BOLUM", OracleDbType.Int32).Value = (cmbBolum.SelectedIndex);
+                        command.Parameters.Add(":BOLUM", OracleDbType.Int32).Value = bolumKodu;
 
                     }
 
@@ -201,7 +220,7 @@ namespace PROJE
                     }
                     else
                     {
-                        command.Parameters.Add(":DR_KODU", OracleDbType.Int32).Value = (cmbDr.SelectedIndex);
+                        command.Parameters.Add(":DR_KODU", OracleDbType.Int32).Value = drKodu;
                     }
 
                     // DOSYA_NO parametresini Form1'den gelen dosya numarasına göre ekliyoruz
@@ -225,8 +244,46 @@ namespace PROJE
                     {
                         MessageBox.Show("Hata: " + ex.Message);
                     }
+
+                    
                 }
-              }
+            }
+        }
+
+        private void cmbDr_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+            OracleDbHelper dbHelper = new OracleDbHelper();
+
+            using (OracleConnection connection = dbHelper.GetConnection())
+            {
+                connection.Open();
+
+                string kod = cmbDr.SelectedItem.ToString();
+                string sql = "SELECT DR_KODU FROM HASTANE.DRADI WHERE ADI_SOYADI = :ADI_SOYADI";
+                using (OracleCommand command = new OracleCommand(sql, connection))
+                {
+
+                    command.Parameters.Add(new OracleParameter(":ADI_SOYADI", OracleDbType.Varchar2)).Value = kod;
+
+                    using (OracleDataReader reader = command.ExecuteReader())
+                    {
+
+                        if (reader.Read())
+                        {
+
+                            drKodu = Convert.ToInt32(reader["DR_KODU"]);
+                           
+                        }
+                        else
+                        {
+                            MessageBox.Show("Seçilen kurum için kayıt bulunamadı.");
+                        }
+
+                    }
+                }
             }
         }
     }
+}
+

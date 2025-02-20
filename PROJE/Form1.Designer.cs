@@ -1508,6 +1508,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             Load += Form1_Load;
+            KeyDown += Form1_KeyDown;
             groupBoxAra.ResumeLayout(false);
             groupBoxAra.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)btnHam).EndInit();
