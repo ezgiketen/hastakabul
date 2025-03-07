@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             groupBoxAra = new GroupBox();
+            pictureBox3 = new PictureBox();
             label5 = new Label();
             label4 = new Label();
             btnHam = new PictureBox();
@@ -155,6 +156,7 @@
             flowPanelDoktorTrans = new System.Windows.Forms.Timer(components);
             dataGridView1 = new DataGridView();
             groupBoxAra.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)btnHam).BeginInit();
             groupBoxKimlik.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -182,6 +184,7 @@
             // groupBoxAra
             // 
             groupBoxAra.BackColor = Color.FromArgb(242, 248, 251);
+            groupBoxAra.Controls.Add(pictureBox3);
             groupBoxAra.Controls.Add(label5);
             groupBoxAra.Controls.Add(label4);
             groupBoxAra.Controls.Add(btnHam);
@@ -196,18 +199,28 @@
             groupBoxAra.Controls.Add(txtSoyadıArama);
             groupBoxAra.Location = new Point(3, 3);
             groupBoxAra.Name = "groupBoxAra";
-            groupBoxAra.Size = new Size(1921, 74);
+            groupBoxAra.Size = new Size(1921, 57);
             groupBoxAra.TabIndex = 1;
             groupBoxAra.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3.Image = (Image)resources.GetObject("pictureBox3.Image");
+            pictureBox3.Location = new Point(1849, 15);
+            pictureBox3.Name = "pictureBox3";
+            pictureBox3.Size = new Size(46, 37);
+            pictureBox3.SizeMode = PictureBoxSizeMode.CenterImage;
+            pictureBox3.TabIndex = 9;
+            pictureBox3.TabStop = false;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            label5.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             label5.ForeColor = Color.FromArgb(0, 49, 83);
-            label5.Location = new Point(1781, 31);
+            label5.Location = new Point(1802, 25);
             label5.Name = "label5";
-            label5.Size = new Size(57, 23);
+            label5.Size = new Size(51, 20);
             label5.TabIndex = 65;
             label5.Text = "TEMA";
             // 
@@ -216,16 +229,16 @@
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
             label4.ForeColor = Color.FromArgb(0, 49, 83);
-            label4.Location = new Point(288, 30);
+            label4.Location = new Point(277, 24);
             label4.Name = "label4";
-            label4.Size = new Size(134, 23);
+            label4.Size = new Size(150, 23);
             label4.TabIndex = 36;
-            label4.Text = "HASTA ARAMA";
+            label4.Text = "HASTA SORGULA";
             // 
             // btnHam
             // 
             btnHam.Image = (Image)resources.GetObject("btnHam.Image");
-            btnHam.Location = new Point(6, 27);
+            btnHam.Location = new Point(0, 20);
             btnHam.Name = "btnHam";
             btnHam.Size = new Size(41, 30);
             btnHam.SizeMode = PictureBoxSizeMode.Zoom;
@@ -235,21 +248,25 @@
             // 
             // btnYeniHasta
             // 
+            btnYeniHasta.BackColor = Color.FromArgb(242, 248, 251);
             btnYeniHasta.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnYeniHasta.ForeColor = Color.FromArgb(0, 49, 83);
-            btnYeniHasta.Location = new Point(1542, 27);
+            btnYeniHasta.Image = (Image)resources.GetObject("btnYeniHasta.Image");
+            btnYeniHasta.ImageAlign = ContentAlignment.MiddleRight;
+            btnYeniHasta.Location = new Point(1425, 19);
             btnYeniHasta.Name = "btnYeniHasta";
-            btnYeniHasta.Size = new Size(106, 29);
+            btnYeniHasta.Size = new Size(133, 33);
             btnYeniHasta.TabIndex = 64;
-            btnYeniHasta.Text = "Yeni Hasta ";
-            btnYeniHasta.UseVisualStyleBackColor = true;
+            btnYeniHasta.Text = "YENİ HASTA       ";
+            btnYeniHasta.UseVisualStyleBackColor = false;
             btnYeniHasta.Click += btnYeniHasta_Click;
             // 
             // cmbTema
             // 
             cmbTema.BackColor = Color.White;
             cmbTema.FormattingEnabled = true;
-            cmbTema.Location = new Point(1849, 27);
+            cmbTema.ImeMode = ImeMode.Off;
+            cmbTema.Location = new Point(1849, 20);
             cmbTema.Name = "cmbTema";
             cmbTema.Size = new Size(66, 28);
             cmbTema.TabIndex = 10;
@@ -257,20 +274,23 @@
             // 
             // btnAra
             // 
-            btnAra.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            btnAra.BackColor = Color.FromArgb(242, 248, 251);
+            btnAra.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnAra.ForeColor = Color.FromArgb(0, 49, 83);
-            btnAra.Location = new Point(1148, 29);
+            btnAra.Image = (Image)resources.GetObject("btnAra.Image");
+            btnAra.ImageAlign = ContentAlignment.MiddleRight;
+            btnAra.Location = new Point(1165, 21);
             btnAra.Name = "btnAra";
-            btnAra.Size = new Size(106, 29);
+            btnAra.Size = new Size(97, 29);
             btnAra.TabIndex = 9;
-            btnAra.Text = "Ara";
-            btnAra.UseVisualStyleBackColor = true;
-            btnAra.Click += btnAra_Click_1;
+            btnAra.Text = "Ara   ";
+            btnAra.UseVisualStyleBackColor = false;
+            btnAra.Click += btnAra_Click;
             // 
             // lblTCArama
             // 
             lblTCArama.AutoSize = true;
-            lblTCArama.Location = new Point(438, 35);
+            lblTCArama.Location = new Point(438, 26);
             lblTCArama.Name = "lblTCArama";
             lblTCArama.Size = new Size(96, 20);
             lblTCArama.TabIndex = 0;
@@ -279,7 +299,7 @@
             // lblAdıArama
             // 
             lblAdıArama.AutoSize = true;
-            lblAdıArama.Location = new Point(706, 33);
+            lblAdıArama.Location = new Point(706, 25);
             lblAdıArama.Name = "lblAdıArama";
             lblAdıArama.Size = new Size(32, 20);
             lblAdıArama.TabIndex = 1;
@@ -288,7 +308,7 @@
             // lblSoyadıArama
             // 
             lblSoyadıArama.AutoSize = true;
-            lblSoyadıArama.Location = new Point(904, 34);
+            lblSoyadıArama.Location = new Point(904, 26);
             lblSoyadıArama.Name = "lblSoyadıArama";
             lblSoyadıArama.Size = new Size(55, 20);
             lblSoyadıArama.TabIndex = 2;
@@ -296,22 +316,24 @@
             // 
             // txtTCArama
             // 
-            txtTCArama.Location = new Point(540, 30);
+            txtTCArama.Location = new Point(540, 23);
             txtTCArama.MaxLength = 11;
             txtTCArama.Name = "txtTCArama";
             txtTCArama.Size = new Size(140, 27);
             txtTCArama.TabIndex = 8;
+            txtTCArama.Text = "56224693108";
             // 
             // txtAdıArama
             // 
-            txtAdıArama.Location = new Point(744, 30);
+            txtAdıArama.Location = new Point(744, 22);
             txtAdıArama.Name = "txtAdıArama";
             txtAdıArama.Size = new Size(140, 27);
             txtAdıArama.TabIndex = 8;
             // 
             // txtSoyadıArama
             // 
-            txtSoyadıArama.Location = new Point(965, 30);
+            txtSoyadıArama.BackColor = Color.White;
+            txtSoyadıArama.Location = new Point(965, 22);
             txtSoyadıArama.Name = "txtSoyadıArama";
             txtSoyadıArama.Size = new Size(140, 27);
             txtSoyadıArama.TabIndex = 8;
@@ -388,7 +410,7 @@
             groupBoxKimlik.Controls.Add(lblSoyadı);
             groupBoxKimlik.Controls.Add(lblTc);
             groupBoxKimlik.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            groupBoxKimlik.Location = new Point(252, 92);
+            groupBoxKimlik.Location = new Point(264, 114);
             groupBoxKimlik.Name = "groupBoxKimlik";
             groupBoxKimlik.Size = new Size(680, 907);
             groupBoxKimlik.TabIndex = 2;
@@ -396,13 +418,16 @@
             // 
             // btnGuncelle
             // 
+            btnGuncelle.BackColor = Color.FromArgb(242, 248, 251);
             btnGuncelle.ForeColor = Color.FromArgb(0, 49, 83);
-            btnGuncelle.Location = new Point(501, 793);
+            btnGuncelle.Image = (Image)resources.GetObject("btnGuncelle.Image");
+            btnGuncelle.ImageAlign = ContentAlignment.MiddleRight;
+            btnGuncelle.Location = new Point(483, 797);
             btnGuncelle.Name = "btnGuncelle";
-            btnGuncelle.Size = new Size(106, 29);
+            btnGuncelle.Size = new Size(133, 36);
             btnGuncelle.TabIndex = 35;
-            btnGuncelle.Text = "GÜNCELLE";
-            btnGuncelle.UseVisualStyleBackColor = true;
+            btnGuncelle.Text = "GÜNCELLE        ";
+            btnGuncelle.UseVisualStyleBackColor = false;
             btnGuncelle.Visible = false;
             btnGuncelle.Click += btnGuncelle_Click;
             // 
@@ -420,7 +445,6 @@
             comboBox4.Name = "comboBox4";
             comboBox4.Size = new Size(161, 28);
             comboBox4.TabIndex = 33;
-            comboBox4.SelectedIndexChanged += comboBox4_SelectedIndexChanged;
             // 
             // comboBox3
             // 
@@ -541,13 +565,16 @@
             // 
             // btnKaydet
             // 
+            btnKaydet.BackColor = Color.FromArgb(242, 248, 251);
             btnKaydet.ForeColor = Color.FromArgb(0, 49, 83);
-            btnKaydet.Location = new Point(468, 827);
+            btnKaydet.Image = (Image)resources.GetObject("btnKaydet.Image");
+            btnKaydet.ImageAlign = ContentAlignment.MiddleRight;
+            btnKaydet.Location = new Point(483, 797);
             btnKaydet.Name = "btnKaydet";
-            btnKaydet.Size = new Size(106, 29);
+            btnKaydet.Size = new Size(133, 36);
             btnKaydet.TabIndex = 22;
-            btnKaydet.Text = "KAYDET";
-            btnKaydet.UseVisualStyleBackColor = true;
+            btnKaydet.Text = "KAYDET      ";
+            btnKaydet.UseVisualStyleBackColor = false;
             btnKaydet.Click += btnKaydet_Click;
             // 
             // comboBox1
@@ -558,6 +585,7 @@
             comboBox1.Size = new Size(162, 28);
             comboBox1.TabIndex = 21;
             comboBox1.Tag = "";
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // lblKanGrubu
             // 
@@ -800,7 +828,7 @@
             groupBoxHastaBilgi.Controls.Add(lblBilgiCepTel);
             groupBoxHastaBilgi.Controls.Add(lblBilgiYas);
             groupBoxHastaBilgi.Font = new Font("Segoe UI", 10.2F);
-            groupBoxHastaBilgi.Location = new Point(264, 128);
+            groupBoxHastaBilgi.Location = new Point(950, 114);
             groupBoxHastaBilgi.Name = "groupBoxHastaBilgi";
             groupBoxHastaBilgi.Size = new Size(680, 929);
             groupBoxHastaBilgi.TabIndex = 3;
@@ -991,26 +1019,32 @@
             // 
             // button2
             // 
-            button2.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            button2.BackColor = Color.FromArgb(242, 248, 251);
+            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             button2.ForeColor = Color.FromArgb(0, 49, 83);
-            button2.Location = new Point(541, 167);
+            button2.Image = (Image)resources.GetObject("button2.Image");
+            button2.ImageAlign = ContentAlignment.MiddleRight;
+            button2.Location = new Point(526, 170);
             button2.Name = "button2";
-            button2.Size = new Size(106, 29);
+            button2.Size = new Size(122, 35);
             button2.TabIndex = 59;
-            button2.Text = "YENİ TAKİP";
-            button2.UseVisualStyleBackColor = true;
+            button2.Text = "YENİ TAKİP    ";
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
             // btnDuzenle
             // 
-            btnDuzenle.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            btnDuzenle.BackColor = Color.FromArgb(242, 248, 251);
+            btnDuzenle.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
             btnDuzenle.ForeColor = Color.FromArgb(0, 49, 83);
-            btnDuzenle.Location = new Point(468, 751);
+            btnDuzenle.Image = (Image)resources.GetObject("btnDuzenle.Image");
+            btnDuzenle.ImageAlign = ContentAlignment.MiddleRight;
+            btnDuzenle.Location = new Point(470, 778);
             btnDuzenle.Name = "btnDuzenle";
-            btnDuzenle.Size = new Size(106, 29);
+            btnDuzenle.Size = new Size(122, 35);
             btnDuzenle.TabIndex = 59;
-            btnDuzenle.Text = "DÜZENLE";
-            btnDuzenle.UseVisualStyleBackColor = true;
+            btnDuzenle.Text = "DÜZENLE     ";
+            btnDuzenle.UseVisualStyleBackColor = false;
             btnDuzenle.Click += btnDuzenle_Click;
             // 
             // lblBilgiTC
@@ -1192,11 +1226,11 @@
             btnHasta.ForeColor = Color.Black;
             btnHasta.Image = (Image)resources.GetObject("btnHasta.Image");
             btnHasta.ImageAlign = ContentAlignment.MiddleLeft;
-            btnHasta.Location = new Point(-64, -8);
+            btnHasta.Location = new Point(-68, -6);
             btnHasta.Margin = new Padding(0);
             btnHasta.Name = "btnHasta";
             btnHasta.Padding = new Padding(66, 0, 0, 0);
-            btnHasta.Size = new Size(292, 56);
+            btnHasta.Size = new Size(292, 53);
             btnHasta.TabIndex = 8;
             btnHasta.Text = "HASTA";
             btnHasta.UseVisualStyleBackColor = false;
@@ -1208,7 +1242,7 @@
             flowPanelUst.Dock = DockStyle.Top;
             flowPanelUst.Location = new Point(0, 0);
             flowPanelUst.Name = "flowPanelUst";
-            flowPanelUst.Size = new Size(1924, 77);
+            flowPanelUst.Size = new Size(1924, 62);
             flowPanelUst.TabIndex = 6;
             // 
             // sideBar
@@ -1218,9 +1252,9 @@
             sideBar.Controls.Add(flowPanelHemsire);
             sideBar.Controls.Add(flowPanelDoktor);
             sideBar.Dock = DockStyle.Left;
-            sideBar.Location = new Point(0, 77);
+            sideBar.Location = new Point(0, 62);
             sideBar.Name = "sideBar";
-            sideBar.Size = new Size(231, 978);
+            sideBar.Size = new Size(233, 993);
             sideBar.TabIndex = 7;
             // 
             // flowPanelHasta
@@ -1231,7 +1265,7 @@
             flowPanelHasta.Controls.Add(panel7);
             flowPanelHasta.Location = new Point(3, 3);
             flowPanelHasta.Name = "flowPanelHasta";
-            flowPanelHasta.Size = new Size(228, 45);
+            flowPanelHasta.Size = new Size(228, 125);
             flowPanelHasta.TabIndex = 10;
             // 
             // panel4
@@ -1296,9 +1330,9 @@
             flowPanelHemsire.BackColor = Color.FromArgb(190, 200, 215);
             flowPanelHemsire.Controls.Add(panel5);
             flowPanelHemsire.Controls.Add(panel8);
-            flowPanelHemsire.Location = new Point(3, 54);
+            flowPanelHemsire.Location = new Point(3, 134);
             flowPanelHemsire.Name = "flowPanelHemsire";
-            flowPanelHemsire.Size = new Size(227, 48);
+            flowPanelHemsire.Size = new Size(227, 128);
             flowPanelHemsire.TabIndex = 10;
             // 
             // panel5
@@ -1350,6 +1384,7 @@
             btnGebelikTakibi.TabIndex = 8;
             btnGebelikTakibi.Text = "Gebelik Takibi";
             btnGebelikTakibi.UseVisualStyleBackColor = false;
+            btnGebelikTakibi.Click += btnGebelikTakibi_Click;
             // 
             // flowPanelDoktor
             // 
@@ -1358,9 +1393,9 @@
             flowPanelDoktor.Controls.Add(panel9);
             flowPanelDoktor.Controls.Add(panel10);
             flowPanelDoktor.Controls.Add(panel11);
-            flowPanelDoktor.Location = new Point(3, 108);
+            flowPanelDoktor.Location = new Point(3, 268);
             flowPanelDoktor.Name = "flowPanelDoktor";
-            flowPanelDoktor.Size = new Size(228, 180);
+            flowPanelDoktor.Size = new Size(228, 128);
             flowPanelDoktor.TabIndex = 10;
             // 
             // panel3
@@ -1461,6 +1496,7 @@
             btnTani.TabIndex = 8;
             btnTani.Text = "Tanı";
             btnTani.UseVisualStyleBackColor = false;
+            btnTani.Click += btnTani_Click;
             // 
             // flowPanelHastaTrans
             // 
@@ -1469,7 +1505,7 @@
             // 
             // sideBarTransition
             // 
-            sideBarTransition.Interval = 10;
+            sideBarTransition.Interval = 2;
             sideBarTransition.Tick += sideBarTransition_Tick;
             // 
             // flowPanelHemsireTrans
@@ -1484,14 +1520,13 @@
             // 
             // dataGridView1
             // 
-            dataGridView1.BackgroundColor = Color.FromArgb(242, 248, 251);
+            dataGridView1.BackgroundColor = Color.FromArgb(248, 251, 242);
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(964, 92);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(877, 929);
+            dataGridView1.Size = new Size(877, 878);
             dataGridView1.TabIndex = 8;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // Form1
             // 
@@ -1499,9 +1534,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1924, 1055);
-            Controls.Add(groupBoxKimlik);
             Controls.Add(groupBoxHastaBilgi);
             Controls.Add(dataGridView1);
+            Controls.Add(groupBoxKimlik);
             Controls.Add(sideBar);
             Controls.Add(flowPanelUst);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
@@ -1511,6 +1546,7 @@
             KeyDown += Form1_KeyDown;
             groupBoxAra.ResumeLayout(false);
             groupBoxAra.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)btnHam).EndInit();
             groupBoxKimlik.ResumeLayout(false);
             groupBoxKimlik.PerformLayout();
@@ -1666,5 +1702,6 @@
         private Button btnTani;
         private DataGridView dataGridView1;
         private Label label5;
+        private PictureBox pictureBox3;
     }
 }

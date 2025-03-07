@@ -12,6 +12,7 @@ using System.Reflection.PortableExecutable;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 using Oracle.ManagedDataAccess;
 using Oracle.ManagedDataAccess.Client;
@@ -33,12 +34,7 @@ namespace PROJE
 
 
         }
-        // lblDosyaNoo'yu dýþarýya eriþilebilir yapmak için bir property ekleyin
-        public string DosyaNo
-        {
-            get { return lblDosyaNoo.Text; }
-            set { lblDosyaNoo.Text = value; }
-        }
+
 
         private bool menuExpandHasta = false;
         private bool menuExpandHemsire = false;
@@ -261,15 +257,11 @@ namespace PROJE
                                             txtAciklama.Clear();
                                             txtKronik.Clear();
 
-
-
-
                                         }
                                         else
                                         {
                                             MessageBox.Show("Kayýt eklenemedi!", "Hata", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         }
-
                                     }
                                 }
                             }
@@ -284,7 +276,7 @@ namespace PROJE
 
         }
 
-        private void btnAra_Click_1(object sender, EventArgs e)
+        public void btnAra_Click(object sender, EventArgs e)
         {
 
 
@@ -495,8 +487,6 @@ namespace PROJE
 
                                     long dosyaNo = reader.GetInt64(reader.GetOrdinal("DOSYA_NO"));
 
-
-
                                     lblTCbilgi.Text = tc.ToString();
                                     lblAdBilgi.Text = adýBilgi;
                                     lblSoyadBilgi.Text = soyadýBilgi;
@@ -562,7 +552,6 @@ namespace PROJE
         }
 
 
-
         private void cmbTema_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbTema.SelectedItem != null)
@@ -595,7 +584,7 @@ namespace PROJE
                         flowPanelHemsire.BackColor = ColorTranslator.FromHtml("#cdcdc1");
                         flowPanelDoktor.BackColor = ColorTranslator.FromHtml("#cdcdc1");
 
-                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#eeeee0");
+                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#f8fbf2");
 
                         pictureBox1.Dock = DockStyle.None;
                         pictureBox1.Anchor = AnchorStyles.None;
@@ -619,7 +608,7 @@ namespace PROJE
                         btnRecete.BackColor = ColorTranslator.FromHtml("#eee9e9");
                         btnGebelikTakibi.BackColor = ColorTranslator.FromHtml("#eee9e9");
 
-                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#eee9e9");
+                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#f8fbf2");
 
                         btnHasta.BackColor = ColorTranslator.FromHtml("#cdc9c9");
                         btnDoktor.BackColor = ColorTranslator.FromHtml("#cdc9c9");
@@ -660,7 +649,7 @@ namespace PROJE
                         flowPanelDoktor.BackColor = Color.FromArgb(190, 200, 215);
 
 
-                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#F2F8FB");
+                        dataGridView1.BackgroundColor = ColorTranslator.FromHtml("#f8fbf2");
 
                         pictureBox1.Dock = DockStyle.None;
                         pictureBox1.Anchor = AnchorStyles.None;
@@ -780,21 +769,21 @@ namespace PROJE
                                     string adýBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("ADI")))
                                     {
-                                        adýBilgi = "-";
+                                        adýBilgi = "";
                                     }
                                     else { adýBilgi = reader.GetString(reader.GetOrdinal("ADI")); }
 
                                     string soyadýBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("SOYADI")))
                                     {
-                                        soyadýBilgi = "-";
+                                        soyadýBilgi = "";
                                     }
                                     else { soyadýBilgi = reader.GetString(reader.GetOrdinal("SOYADI")); }
 
                                     string anneAdýBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("ANNE_ADI")))
                                     {
-                                        anneAdýBilgi = "-";
+                                        anneAdýBilgi = "";
                                     }
                                     else { anneAdýBilgi = reader.GetString(reader.GetOrdinal("ANNE_ADI")); }
 
@@ -802,7 +791,7 @@ namespace PROJE
                                     string babaAdýBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("BABA_ADI")))
                                     {
-                                        babaAdýBilgi = "-";
+                                        babaAdýBilgi = "";
                                     }
                                     else { babaAdýBilgi = reader.GetString(reader.GetOrdinal("BABA_ADI")); }
 
@@ -810,7 +799,7 @@ namespace PROJE
                                     string dogumYeriBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("DOGUMYER")))
                                     {
-                                        dogumYeriBilgi = "-";
+                                        dogumYeriBilgi = "";
                                     }
                                     else
                                     {
@@ -820,7 +809,7 @@ namespace PROJE
                                     string dogumTarihiBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("DOGUM_TAR")))
                                     {
-                                        dogumTarihiBilgi = "-";
+                                        dogumTarihiBilgi = "";
                                     }
                                     else
                                     {
@@ -830,7 +819,7 @@ namespace PROJE
                                     string cepTelBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("CEP_TEL")))
                                     {
-                                        cepTelBilgi = "-";
+                                        cepTelBilgi = "";
                                     }
                                     else
                                     {
@@ -844,7 +833,7 @@ namespace PROJE
 
                                     if (reader.IsDBNull(reader.GetOrdinal("KAN_GRUBU")))
                                     {
-                                        secilenKanGrubu = "-";
+                                        secilenKanGrubu = "";
                                     }
                                     else
                                     {
@@ -857,7 +846,7 @@ namespace PROJE
                                     string cinsiyetBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("CINS")))
                                     {
-                                        cinsiyetBilgi = "-";
+                                        cinsiyetBilgi = "";
                                     }
                                     else
                                     {
@@ -881,7 +870,7 @@ namespace PROJE
                                     string medeniHalBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("MHALI")))
                                     {
-                                        medeniHalBilgi = "-";
+                                        medeniHalBilgi = "";
                                     }
                                     else
                                     {
@@ -903,7 +892,7 @@ namespace PROJE
                                     string adresBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("EV_ADRESI")))
                                     {
-                                        adresBilgi = "-";
+                                        adresBilgi = "";
                                     }
                                     else
                                     {
@@ -913,7 +902,7 @@ namespace PROJE
                                     string ilBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("IL")))
                                     {
-                                        ilBilgi = "-";
+                                        ilBilgi = "";
                                     }
                                     else
                                     {
@@ -923,7 +912,7 @@ namespace PROJE
                                     string ilceBilgi;
                                     if (reader.IsDBNull(reader.GetOrdinal("ILCE")))
                                     {
-                                        ilceBilgi = "-";
+                                        ilceBilgi = "";
                                     }
                                     else
                                     {
@@ -933,7 +922,7 @@ namespace PROJE
                                     string bilgiAciklama;
                                     if (reader.IsDBNull(reader.GetOrdinal("ACIKLAMA")))
                                     {
-                                        bilgiAciklama = "-";
+                                        bilgiAciklama = "";
                                     }
                                     else
                                     {
@@ -943,7 +932,7 @@ namespace PROJE
                                     string bilgiKronik;
                                     if (reader.IsDBNull(reader.GetOrdinal("KRONIK_HASTALIK")))
                                     {
-                                        bilgiKronik = "-";
+                                        bilgiKronik = "";
                                     }
                                     else
                                     {
@@ -1025,7 +1014,7 @@ namespace PROJE
                 {
                     conn.Open();
                     string sql = "UPDATE HASTANE.KIMLIK SET " +
-                                 "DOSYA_NO = KIMSEQ.NEXTVAL," +
+
                                  "ADI = :ADI, " +
                                  "SOYADI = :SOYADI, " +
                                  "ANNE_ADI = :ANNE_ADI, " +
@@ -1113,7 +1102,23 @@ namespace PROJE
 
                         try
                         {
-                            cmd.ExecuteNonQuery();
+                            MessageBox.Show(cmd.CommandText.ToString());
+                            using (OracleTransaction transaction = conn.BeginTransaction())
+                            {
+                                try
+                                {
+                                    cmd.Transaction = transaction;
+                                    cmd.ExecuteNonQuery();  // Execute the command
+                                    transaction.Commit();   // Commit transaction
+                                    MessageBox.Show("Update successful.");
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();  // Rollback on error
+                                    MessageBox.Show("Hata oluþtu: " + ex.Message);
+                                }
+                            }
+
 
                         }
                         catch (Exception ex)
@@ -1194,12 +1199,18 @@ namespace PROJE
                 groupBoxHastaBilgi.Location = new Point(264, 103);
                 groupBoxKimlik.Location = new Point(264, 103);
                 dataGridView1.Location = new Point(980, 103);
+                btnHasta.Enabled = true;
+                btnHemsire.Enabled = true;
+                btnDoktor.Enabled = true;
             }
             else
             {
                 groupBoxHastaBilgi.Location = new Point(90, 103);
                 groupBoxKimlik.Location = new Point(90, 103);
                 dataGridView1.Location = new Point(803, 103);
+                btnHasta.Enabled = false;
+                btnHemsire.Enabled = false;
+                btnDoktor.Enabled = false;
             }
 
             if (menuExpandHemsire)
@@ -1291,36 +1302,77 @@ namespace PROJE
             groupBoxKimlik.Visible = true;
             groupBoxHastaBilgi.Visible = false;
             dataGridView1.Visible = false;
+
+
+            txtTC.Clear();
+            txtAdi.Clear();
+            txtSoyadi.Clear();
+            txtAnneAdý.Clear();
+            txtBabaAdý.Clear();
+            txtAdres.Clear();
+            txtDogumYeri.Clear();
+            txtCepTel.Clear();
+            txtAciklama.Clear();
+            txtKronik.Clear();
+            txtAciklama.Clear();
+            txtKronik.Clear();
+            comboBox1.SelectedIndex = -1;
+            comboBox3.SelectedIndex = -1;
+            comboBox4.SelectedIndex = -1;
+
         }
 
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
 
-        }
 
         private void btnRecete_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                // Seçilen satýrý alýyoruz
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 
-            FormRecete receteForm = new FormRecete(lblTCbilgi.Text, lblAdBilgi.Text, lblSoyadBilgi.Text);
-            receteForm.Show();
+                // Protokol numarasýný ve dosya numarasýný alýyoruz
+                int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
+                int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                string hastaAdi = lblAdBilgi.Text;
+                string hastaSoyadi = lblSoyadBilgi.Text;
+                long tcKimlikNo = Convert.ToInt64(lblTCbilgi.Text);
+                string tema = cmbTema.Text;
+
+                // FormRecete formunu oluþturuyoruz
+                FormRecete receteForm = new FormRecete();
+
+                // FormRecete'ye protokolNo ve dosyaNo deðerlerini aktarýyoruz
+                receteForm.protokolNo = protokolNo;
+                receteForm.dosyaNo = dosyaNo;
+                receteForm.hastaAdi = hastaAdi;
+                receteForm.hastaSoyadi = hastaSoyadi;
+                receteForm.tcKimlikNo = tcKimlikNo;
+                receteForm.tema = tema;
+
+
+                // Formu gösteriyoruz
+                receteForm.ShowDialog();
+            }
+            else
+            {
+                // Eðer satýr seçilmemiþse uyarý veriyoruz
+                MessageBox.Show("Lütfen önce bir protokol seçiniz!", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
         }
 
-        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)  // Enter tuþuna basýldýðýnda
             {
-                btnAra_Click_1(sender, e); // Ara butonunun click olayýný çaðýr
+                btnAra_Click(sender, e); // Ara butonunun click olayýný çaðýr
                 e.SuppressKeyPress = true; // Enter tuþunun formda baþka bir etki yaratmasýný engelle
             }
         }
-        private void FillDataGridView(string tcKimlikNo)
+        public void FillDataGridView(string tcKimlikNo)
         {
 
             OracleDbHelper dbHelper = new OracleDbHelper();
@@ -1364,6 +1416,8 @@ namespace PROJE
 
                             dataTable.Rows.Add(baslikRow); // Baþlýk satýrýný ekle
 
+
+
                             DataRow toplamRow = dataTable.NewRow();
                             toplamRow["ODENEN"] = toplamOdenen;
                             toplamRow["KALAN"] = toplamKalan;
@@ -1374,8 +1428,15 @@ namespace PROJE
                             dataGridView1.AllowUserToAddRows = false;
                             dataGridView1.RowHeadersVisible = false;
 
-                            dataGridView1.DefaultCellStyle.SelectionBackColor = dataGridView1.DefaultCellStyle.BackColor;
-                            dataGridView1.DefaultCellStyle.SelectionForeColor = dataGridView1.DefaultCellStyle.ForeColor;
+
+                            dataGridView1.Sorted += (s, e) => ApplyRowColors();
+                            ApplyRowColors();
+
+
+                            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                            dataGridView1.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#008b45");
+                            dataGridView1.DefaultCellStyle.SelectionForeColor = Color.White;
+
 
                             for (int i = 0; i < dataGridView1.Rows.Count; i++)
                             {
@@ -1386,11 +1447,11 @@ namespace PROJE
 
                                 if (dataTable.Columns.Count > 0)
                                 {
-                                    dataGridView1.Columns[0].HeaderText = "PROTOKOL";
-                                    dataGridView1.Columns[0].DataPropertyName = "PROTOKOL_NO";
+                                    dataGridView1.Columns[0].HeaderText = "DOSYA NO";
+                                    dataGridView1.Columns[0].DataPropertyName = "DOSYA_NO";
 
-                                    dataGridView1.Columns[1].HeaderText = "DOSYA NO";
-                                    dataGridView1.Columns[1].DataPropertyName = "DOSYA_NO";
+                                    dataGridView1.Columns[1].HeaderText = "PROTOKOL NO";
+                                    dataGridView1.Columns[1].DataPropertyName = "PROTOKOL_NO";
 
                                     dataGridView1.Columns[2].HeaderText = "GELIS TARIHI";
                                     dataGridView1.Columns[2].DataPropertyName = "GTARIH";
@@ -1421,7 +1482,7 @@ namespace PROJE
 
                             // Kolon geniþlikleri
                             dataGridView1.Columns[0].Width = 90;
-                            dataGridView1.Columns[1].Width = 70;
+                            dataGridView1.Columns[1].Width = 90;
                             dataGridView1.Columns[2].Width = 100;
                             dataGridView1.Columns[3].Width = 230;
                             dataGridView1.Columns[4].Width = 210;
@@ -1430,8 +1491,99 @@ namespace PROJE
                         }
                     }
                 }
+            }
+        }
+
+        private void ApplyRowColors()
+        {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (i % 2 == 0)
+                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#fbf2fb");
+                else
+                    dataGridView1.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#f8fbf2");
+            }
+        }
+
+
+        private void btnTani_Click(object sender, EventArgs e)
+        {
+
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+
+                int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
+                int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                string tema = cmbTema.Text;
+
+
+                FormTani taniForm = new FormTani();
+
+                taniForm.protokolNo = protokolNo;
+                taniForm.dosyaNo = dosyaNo;
+                taniForm.tema = tema;
+
+                taniForm.ShowDialog();
 
             }
+            else
+            {
+                MessageBox.Show("Lütfen önce bir protokol seçiniz!", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+
+
+
+
+        }
+
+        private void btnGebelikTakibi_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                // Seçilen satýrý alýyoruz
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+
+                // Protokol numarasýný ve dosya numarasýný alýyoruz
+                int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
+                int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                string hastaAdi = lblAdBilgi.Text;
+                string hastaSoyadi = lblSoyadBilgi.Text;
+                long tcKimlikNo = Convert.ToInt64(lblTCbilgi.Text);
+                string tema = cmbTema.Text;
+
+                // FormRecete formunu oluþturuyoruz
+
+                FormGebelikTakip gebelikForm = new FormGebelikTakip();
+
+                // FormRecete'ye protokolNo ve dosyaNo deðerlerini aktarýyoruz
+                gebelikForm.protokolNo = protokolNo;
+                gebelikForm.dosyaNo = dosyaNo;
+                gebelikForm.hastaAdi = hastaAdi;
+                gebelikForm.hastaSoyadi = hastaSoyadi;
+                gebelikForm.tcKimlikNo = tcKimlikNo;
+                gebelikForm.tema = tema;
+
+
+                // Formu gösteriyoruz
+                gebelikForm.ShowDialog();
+            }
+            else
+            {
+                // Eðer satýr seçilmemiþse uyarý veriyoruz
+                MessageBox.Show("Lütfen önce bir protokol seçiniz!", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
+
+      
+

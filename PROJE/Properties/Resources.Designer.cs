@@ -174,6 +174,16 @@ namespace PROJE.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
         /// </summary>
+        internal static System.Drawing.Bitmap mavi1 {
+            get {
+                object obj = ResourceManager.GetObject("mavi1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
         internal static System.Drawing.Bitmap pngwing_com__10_ {
             get {
                 object obj = ResourceManager.GetObject("pngwing.com (10)", resourceCulture);

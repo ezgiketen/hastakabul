@@ -239,16 +239,30 @@ namespace PROJE
                     {
                         command.ExecuteNonQuery();
                         MessageBox.Show("Kişi başarıyla kaydedildi.");
+
+                        this.Close(); // fromu kapatır 
+
+
+                        //başka bir formdaki butona click 
+                        Form1 form1 = Application.OpenForms["Form1"] as Form1;
+
+                        {
+                            form1.btnAra_Click(this, EventArgs.Empty); 
+
+                        }
                     }
+
+
                     catch (Exception ex)
                     {
                         MessageBox.Show("Hata: " + ex.Message);
                     }
-
-                    
-                }
-            }
-        }
+            } 
+            
+         }
+     }
+            
+        
 
         private void cmbDr_SelectedIndexChanged_1(object sender, EventArgs e)
         {
