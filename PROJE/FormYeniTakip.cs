@@ -34,6 +34,19 @@ namespace PROJE
 
         private void FormYeniTakip_Load(object sender, EventArgs e)
         {
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.CustomFormat = "dd-MM-yyyy";
+
+            this.Width = 916;
+            this.Height = 557;
+
+            int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+
+
+            this.StartPosition = FormStartPosition.Manual;
+            this.Location = new Point((screenWidth - this.Width) / 2, (screenHeight - this.Height) / 2);
+
 
             Console.WriteLine(dosyaNumarasi);
 
@@ -247,7 +260,7 @@ namespace PROJE
                         Form1 form1 = Application.OpenForms["Form1"] as Form1;
 
                         {
-                            form1.btnAra_Click(this, EventArgs.Empty); 
+                            form1.btnAra_Click(this, EventArgs.Empty);
 
                         }
                     }
@@ -257,12 +270,12 @@ namespace PROJE
                     {
                         MessageBox.Show("Hata: " + ex.Message);
                     }
-            } 
-            
-         }
-     }
-            
-        
+                }
+
+            }
+        }
+
+
 
         private void cmbDr_SelectedIndexChanged_1(object sender, EventArgs e)
         {
@@ -287,7 +300,7 @@ namespace PROJE
                         {
 
                             drKodu = Convert.ToInt32(reader["DR_KODU"]);
-                           
+
                         }
                         else
                         {
@@ -298,6 +311,8 @@ namespace PROJE
                 }
             }
         }
+
+       
     }
 }
 

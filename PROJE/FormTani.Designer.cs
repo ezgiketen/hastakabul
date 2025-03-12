@@ -58,6 +58,7 @@
             txtTaniAra.Size = new Size(657, 27);
             txtTaniAra.TabIndex = 0;
             txtTaniAra.Text = "Hızlı Arama";
+            txtTaniAra.Click += txtTaniAra_Click;
             txtTaniAra.TextChanged += txtTaniAra_TextChanged;
             // 
             // cmbTani
@@ -71,6 +72,7 @@
             cmbTani.TabIndex = 1;
             cmbTani.Text = "Tanı Grubu";
             cmbTani.SelectedIndexChanged += cmbTani_SelectedIndexChanged;
+            cmbTani.Click += cmbTani_Click;
             // 
             // dataGridViewTani
             // 
@@ -84,7 +86,7 @@
             // 
             // dataGridViewGöster
             // 
-            dataGridViewGöster.BackgroundColor = Color.FromArgb(221, 221, 221);
+            dataGridViewGöster.BackgroundColor = Color.White;
             dataGridViewGöster.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewGöster.Location = new Point(260, 588);
             dataGridViewGöster.Name = "dataGridViewGöster";
@@ -146,7 +148,6 @@
             groupBox1.TabIndex = 36;
             groupBox1.TabStop = false;
             groupBox1.Text = "HASTA BİLGİLERİ";
-            groupBox1.Enter += groupBox1_Enter;
             // 
             // pictureBox1
             // 

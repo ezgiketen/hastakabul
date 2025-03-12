@@ -266,7 +266,7 @@
             dataGridHastaILac.RowHeadersWidth = 51;
             dataGridHastaILac.Size = new Size(1887, 363);
             dataGridHastaILac.TabIndex = 21;
-            dataGridHastaILac.CellClick += dataGridHastaILac_CellClick;
+        
             // 
             // lblHastaİlaç
             // 

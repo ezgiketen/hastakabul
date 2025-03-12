@@ -24,6 +24,7 @@ namespace PROJE
         public string hastaSoyadi { get; set; }
         public long tcKimlikNo { get; set; }
         public string tema { get; set; }
+        public DateTime gTarih { get; set; }
 
 
         private string hastaTC;
@@ -44,7 +45,7 @@ namespace PROJE
 
         private void FormRecete_Load(object sender, EventArgs e)
         {
-
+            DataGrid();
 
             string hastaAd = hastaAdi;
             string hastaSoyad = hastaSoyadi;
@@ -53,7 +54,7 @@ namespace PROJE
             int protokol = protokolNo;
             string temaSec = tema;
 
-           
+
 
             if (tema == "Sky")
             {
@@ -175,13 +176,13 @@ namespace PROJE
                             // CellFormatting olayını kullanıyoruz
                             dataGridilacListesi.CellFormatting += (sender, e) =>
                             {
-                                
+
                                 if (e.RowIndex >= 0 && e.ColumnIndex == 2)
                                 {
-                                   
+
                                     if (dataGridilacListesi.Rows[e.RowIndex].Cells["ODENME_DURUMU"].Value.ToString() == "1")
                                     {
-                                        e.Value = "SGK"; 
+                                        e.Value = "SGK";
                                     }
                                     else
                                     {
@@ -254,16 +255,18 @@ namespace PROJE
             {
                 connection.Open();
 
-                string sql = "INSERT INTO HASTANE.RECETELER (RECETE_ID, DOSYA_NO, PROTOKOL_NO, ILAC_ADI, BARKOD, KAC_KUTU, KULLANIM_SEKLI, KULLANIM_PERIYODU, KAC_DOZ, ACIKLAMA)  " +
-                                    "VALUES (ilac_seq.NEXTVAL ,:DOSYA_NO, :PROTOKOL_NO, :ILAC_ADI ,:BARKOD, :KAC_KUTU , :KULLANIM_SEKLI , :KULLANIM_PERIYODU ,:KAC_DOZ ,:ACIKLAMA)";
+                string sql = "INSERT INTO HASTANE.RECETELER (RECETE_ID, DOSYA_NO ,PROTOKOL_NO, TARIH , ILAC_ADI, BARKOD, KAC_KUTU, KULLANIM_SEKLI, KULLANIM_PERIYODU, KAC_DOZ, ACIKLAMA)  " +
+                                    "VALUES (ilac_seq.NEXTVAL ,:DOSYA_NO, :PROTOKOL_NO, :TARIH, :ILAC_ADI ,:BARKOD, :KAC_KUTU , :KULLANIM_SEKLI , :KULLANIM_PERIYODU ,:KAC_DOZ ,:ACIKLAMA)";
 
 
                 using (OracleCommand command = new OracleCommand(sql, connection))
                 {
 
                     command.Parameters.Add(":DOSYA_NO", OracleDbType.Int64).Value = dosyaNo;
-
                     command.Parameters.Add(":PROTOKOL_NO", OracleDbType.Int32).Value = protokolNo;
+
+                    command.Parameters.Add(":TARIH", OracleDbType.Date).Value = gTarih;
+
 
                     if (string.IsNullOrEmpty(txtilacAdi.Text))
                     {
@@ -429,14 +432,16 @@ namespace PROJE
                                "FROM HASTANE.RECETELER r " +
                                "LEFT JOIN HASTANE.SNET_ILACKULLANIMSEKLI s ON r.KULLANIM_SEKLI = s.KODU " +
                                "LEFT JOIN HASTANE.SNET_ILACKULLANIMPERIYODU p ON r.KULLANIM_PERIYODU = p.KODU " +
-                               "WHERE r.DOSYA_NO = :DOSYA_NO " +
-                               "AND r.PROTOKOL_NO = :PROTOKOL_NO";
+                               "WHERE r.DOSYA_NO = :DOSYA_NO  " +
+                               "AND r.PROTOKOL_NO = :PROTOKOL_NO " +
+                               "AND r.TARIH = :TARIH";
 
 
                     using (OracleCommand cmd = new OracleCommand(sql, conn))
                     {
                         cmd.Parameters.Add("DOSYA_NO", OracleDbType.Int32).Value = dosyaNo;
                         cmd.Parameters.Add("PROTOKOL_NO", OracleDbType.Int32).Value = protokolNo;
+                        cmd.Parameters.Add("TARIH", OracleDbType.Date).Value = gTarih; 
 
 
                         using (OracleDataAdapter adapter = new OracleDataAdapter(cmd))
@@ -485,7 +490,7 @@ namespace PROJE
                                     dataGridHastaILac.Columns[2].DataPropertyName = "RECETE_ID";
 
                                     dataGridHastaILac.Columns[3].HeaderText = "GELIS TARIHI";
-                                    dataGridHastaILac.Columns[3].DataPropertyName = "GTARIH";
+                                    dataGridHastaILac.Columns[3].DataPropertyName = "TARIH";
                                     dataGridHastaILac.Columns[3].DefaultCellStyle.Format = "dd-MM-yyyy";
 
                                     dataGridHastaILac.Columns[4].HeaderText = "ILAC ADI";
@@ -515,6 +520,18 @@ namespace PROJE
                         }
                     }
 
+                    dataGridHastaILac.Columns[0].Width = 110;
+                    dataGridHastaILac.Columns[1].Width = 110;
+                    dataGridHastaILac.Columns[2].Width = 110;
+                    dataGridHastaILac.Columns[3].Width = 150;
+                    dataGridHastaILac.Columns[4].Width = 290;
+                    dataGridHastaILac.Columns[5].Width = 190;
+                    dataGridHastaILac.Columns[6].Width = 190;
+                    dataGridHastaILac.Columns[7].Width = 170;
+                    dataGridHastaILac.Columns[8].Width = 170;
+                    dataGridHastaILac.Columns[9].Width = 170;
+                    dataGridHastaILac.Columns[10].Width = 230;
+
 
                     // Kolon sıralamalarını sabitle
                     dataGridHastaILac.Columns[0].DisplayIndex = 0;
@@ -533,11 +550,7 @@ namespace PROJE
             }
         }
 
-        private void btnSil_Click(object sender, EventArgs e)
-        {
 
-
-        }
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -552,40 +565,43 @@ namespace PROJE
 
         private void btnSil_Click_1(object sender, EventArgs e)
         {
-            if (dataGridHastaILac.SelectedCells.Count > 0)
+            if (dataGridHastaILac.SelectedRows.Count > 0)
             {
-                int selectedIndex = dataGridHastaILac.SelectedCells[0].RowIndex;
-                int receteID = Convert.ToInt32(dataGridHastaILac.Rows[selectedIndex].Cells["RECETE_ID"].Value);
+                
+                int selectedIndex = dataGridHastaILac.SelectedRows[0].Index;
+                int receteId = Convert.ToInt32(dataGridHastaILac.Rows[selectedIndex].Cells[2].Value);
 
                 OracleDbHelper dbHelper = new OracleDbHelper();
-
-                using (OracleConnection conn = dbHelper.GetConnection())
+                using (OracleConnection connection = dbHelper.GetConnection())
                 {
-
-                    conn.Open();
-
-
-                    string sql = "DELETE from HASTANE.RECETELER WHERE RECETE_ID = :RECETE_ID";
-
-                    using (OracleCommand cmd = new OracleCommand(sql, conn))
+                    try
                     {
+                        connection.Open();
 
-                        cmd.Parameters.Add(new OracleParameter(":RECETE_ID", OracleDbType.Int32)).Value = receteID;
-
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-
-                        if (rowsAffected > 0)
+                        string sql = "DELETE FROM HASTANE.RECETELER WHERE RECETE_ID = :RECETE_ID";
+                        using (OracleCommand command = new OracleCommand(sql, connection))
                         {
-                            MessageBox.Show("Reçete başarıyla silindi.");
+                            command.Parameters.Add(":RECETE_ID", OracleDbType.Int32).Value = receteId;
 
+                            int rowsAffected = command.ExecuteNonQuery();
 
-                            dataGridHastaILac.Rows.RemoveAt(selectedIndex);
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show("Reçete başarıyla silindi.");
+
+                                dataGridHastaILac.Rows.RemoveAt(selectedIndex);
+
+                                DataGrid();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Silme işlemi başarısız oldu.");
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Silme işlemi başarısız oldu.");
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Bir hata oluştu: {ex.Message}");
                     }
                 }
             }
@@ -594,13 +610,7 @@ namespace PROJE
                 MessageBox.Show("Lütfen silmek için bir satır seçin.");
             }
         }
-
-        private void dataGridHastaILac_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
     }
-
 }
 
 

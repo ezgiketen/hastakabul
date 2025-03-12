@@ -146,10 +146,12 @@
             btnDoktor = new Button();
             panel9 = new Panel();
             btnMuayene = new Button();
-            panel10 = new Panel();
-            btnRecete = new Button();
+            panel12 = new Panel();
+            btnIslemTetkik = new Button();
             panel11 = new Panel();
             btnTani = new Button();
+            panel10 = new Panel();
+            btnRecete = new Button();
             flowPanelHastaTrans = new System.Windows.Forms.Timer(components);
             sideBarTransition = new System.Windows.Forms.Timer(components);
             flowPanelHemsireTrans = new System.Windows.Forms.Timer(components);
@@ -176,8 +178,9 @@
             flowPanelDoktor.SuspendLayout();
             panel3.SuspendLayout();
             panel9.SuspendLayout();
-            panel10.SuspendLayout();
+            panel12.SuspendLayout();
             panel11.SuspendLayout();
+            panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -828,7 +831,7 @@
             groupBoxHastaBilgi.Controls.Add(lblBilgiCepTel);
             groupBoxHastaBilgi.Controls.Add(lblBilgiYas);
             groupBoxHastaBilgi.Font = new Font("Segoe UI", 10.2F);
-            groupBoxHastaBilgi.Location = new Point(950, 114);
+            groupBoxHastaBilgi.Location = new Point(264, 92);
             groupBoxHastaBilgi.Name = "groupBoxHastaBilgi";
             groupBoxHastaBilgi.Size = new Size(680, 929);
             groupBoxHastaBilgi.TabIndex = 3;
@@ -1024,11 +1027,11 @@
             button2.ForeColor = Color.FromArgb(0, 49, 83);
             button2.Image = (Image)resources.GetObject("button2.Image");
             button2.ImageAlign = ContentAlignment.MiddleRight;
-            button2.Location = new Point(526, 170);
+            button2.Location = new Point(499, 170);
             button2.Name = "button2";
-            button2.Size = new Size(122, 35);
+            button2.Size = new Size(148, 35);
             button2.TabIndex = 59;
-            button2.Text = "YENİ TAKİP    ";
+            button2.Text = "YENİ PROTOKOL    ";
             button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click;
             // 
@@ -1254,8 +1257,9 @@
             sideBar.Dock = DockStyle.Left;
             sideBar.Location = new Point(0, 62);
             sideBar.Name = "sideBar";
-            sideBar.Size = new Size(233, 993);
+            sideBar.Size = new Size(231, 993);
             sideBar.TabIndex = 7;
+            sideBar.Paint += sideBar_Paint;
             // 
             // flowPanelHasta
             // 
@@ -1300,6 +1304,7 @@
             btnVezne.TabIndex = 8;
             btnVezne.Text = "Vezne";
             btnVezne.UseVisualStyleBackColor = false;
+            btnVezne.Click += btnVezne_Click;
             // 
             // panel7
             // 
@@ -1332,7 +1337,7 @@
             flowPanelHemsire.Controls.Add(panel8);
             flowPanelHemsire.Location = new Point(3, 134);
             flowPanelHemsire.Name = "flowPanelHemsire";
-            flowPanelHemsire.Size = new Size(227, 128);
+            flowPanelHemsire.Size = new Size(227, 126);
             flowPanelHemsire.TabIndex = 10;
             // 
             // panel5
@@ -1391,11 +1396,12 @@
             flowPanelDoktor.BackColor = Color.FromArgb(190, 200, 215);
             flowPanelDoktor.Controls.Add(panel3);
             flowPanelDoktor.Controls.Add(panel9);
-            flowPanelDoktor.Controls.Add(panel10);
+            flowPanelDoktor.Controls.Add(panel12);
             flowPanelDoktor.Controls.Add(panel11);
-            flowPanelDoktor.Location = new Point(3, 268);
+            flowPanelDoktor.Controls.Add(panel10);
+            flowPanelDoktor.Location = new Point(3, 266);
             flowPanelDoktor.Name = "flowPanelDoktor";
-            flowPanelDoktor.Size = new Size(228, 128);
+            flowPanelDoktor.Size = new Size(228, 130);
             flowPanelDoktor.TabIndex = 10;
             // 
             // panel3
@@ -1448,30 +1454,30 @@
             btnMuayene.Text = "Muayene";
             btnMuayene.UseVisualStyleBackColor = false;
             // 
-            // panel10
+            // panel12
             // 
-            panel10.Controls.Add(btnRecete);
-            panel10.Location = new Point(1, 90);
-            panel10.Margin = new Padding(1);
-            panel10.Name = "panel10";
-            panel10.Padding = new Padding(5, 5, 0, 0);
-            panel10.Size = new Size(229, 39);
-            panel10.TabIndex = 9;
+            panel12.Controls.Add(btnIslemTetkik);
+            panel12.Location = new Point(1, 90);
+            panel12.Margin = new Padding(1);
+            panel12.Name = "panel12";
+            panel12.Padding = new Padding(5, 5, 0, 0);
+            panel12.Size = new Size(229, 39);
+            panel12.TabIndex = 64;
             // 
-            // btnRecete
+            // btnIslemTetkik
             // 
-            btnRecete.BackColor = Color.FromArgb(242, 248, 251);
-            btnRecete.BackgroundImageLayout = ImageLayout.None;
-            btnRecete.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            btnRecete.ForeColor = Color.Black;
-            btnRecete.ImageAlign = ContentAlignment.MiddleLeft;
-            btnRecete.Location = new Point(-51, -6);
-            btnRecete.Name = "btnRecete";
-            btnRecete.Size = new Size(305, 50);
-            btnRecete.TabIndex = 8;
-            btnRecete.Text = "Reçete";
-            btnRecete.UseVisualStyleBackColor = false;
-            btnRecete.Click += btnRecete_Click;
+            btnIslemTetkik.BackColor = Color.FromArgb(242, 248, 251);
+            btnIslemTetkik.BackgroundImageLayout = ImageLayout.None;
+            btnIslemTetkik.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            btnIslemTetkik.ForeColor = Color.Black;
+            btnIslemTetkik.ImageAlign = ContentAlignment.MiddleLeft;
+            btnIslemTetkik.Location = new Point(-56, -4);
+            btnIslemTetkik.Name = "btnIslemTetkik";
+            btnIslemTetkik.Size = new Size(305, 50);
+            btnIslemTetkik.TabIndex = 8;
+            btnIslemTetkik.Text = "   İşlem Tetkik ";
+            btnIslemTetkik.UseVisualStyleBackColor = false;
+            btnIslemTetkik.Click += btnIslemTetkik_Click;
             // 
             // panel11
             // 
@@ -1497,6 +1503,31 @@
             btnTani.Text = "Tanı";
             btnTani.UseVisualStyleBackColor = false;
             btnTani.Click += btnTani_Click;
+            // 
+            // panel10
+            // 
+            panel10.Controls.Add(btnRecete);
+            panel10.Location = new Point(1, 172);
+            panel10.Margin = new Padding(1);
+            panel10.Name = "panel10";
+            panel10.Padding = new Padding(5, 5, 0, 0);
+            panel10.Size = new Size(229, 39);
+            panel10.TabIndex = 9;
+            // 
+            // btnRecete
+            // 
+            btnRecete.BackColor = Color.FromArgb(242, 248, 251);
+            btnRecete.BackgroundImageLayout = ImageLayout.None;
+            btnRecete.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            btnRecete.ForeColor = Color.Black;
+            btnRecete.ImageAlign = ContentAlignment.MiddleLeft;
+            btnRecete.Location = new Point(-51, -6);
+            btnRecete.Name = "btnRecete";
+            btnRecete.Size = new Size(305, 50);
+            btnRecete.TabIndex = 8;
+            btnRecete.Text = "Reçete";
+            btnRecete.UseVisualStyleBackColor = false;
+            btnRecete.Click += btnRecete_Click;
             // 
             // flowPanelHastaTrans
             // 
@@ -1525,7 +1556,7 @@
             dataGridView1.Location = new Point(964, 92);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(877, 878);
+            dataGridView1.Size = new Size(877, 929);
             dataGridView1.TabIndex = 8;
             // 
             // Form1
@@ -1571,8 +1602,9 @@
             flowPanelDoktor.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel9.ResumeLayout(false);
-            panel10.ResumeLayout(false);
+            panel12.ResumeLayout(false);
             panel11.ResumeLayout(false);
+            panel10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
@@ -1703,5 +1735,7 @@
         private DataGridView dataGridView1;
         private Label label5;
         private PictureBox pictureBox3;
+        private Panel panel12;
+        private Button btnIslemTetkik;
     }
 }

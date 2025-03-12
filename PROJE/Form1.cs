@@ -71,6 +71,8 @@ namespace PROJE
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+
             OracleDbHelper dbHelper = new OracleDbHelper();
 
             using (OracleConnection conn = dbHelper.GetConnection())
@@ -1329,35 +1331,33 @@ namespace PROJE
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                // Seçilen satýrý alýyoruz
+
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 
-                // Protokol numarasýný ve dosya numarasýný alýyoruz
                 int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
                 int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                DateTime gTarih = Convert.ToDateTime(selectedRow.Cells[2].Value);
                 string hastaAdi = lblAdBilgi.Text;
                 string hastaSoyadi = lblSoyadBilgi.Text;
                 long tcKimlikNo = Convert.ToInt64(lblTCbilgi.Text);
                 string tema = cmbTema.Text;
 
-                // FormRecete formunu oluþturuyoruz
                 FormRecete receteForm = new FormRecete();
 
-                // FormRecete'ye protokolNo ve dosyaNo deðerlerini aktarýyoruz
+
                 receteForm.protokolNo = protokolNo;
                 receteForm.dosyaNo = dosyaNo;
                 receteForm.hastaAdi = hastaAdi;
                 receteForm.hastaSoyadi = hastaSoyadi;
                 receteForm.tcKimlikNo = tcKimlikNo;
                 receteForm.tema = tema;
+                receteForm.gTarih = gTarih;
 
-
-                // Formu gösteriyoruz
                 receteForm.ShowDialog();
             }
             else
             {
-                // Eðer satýr seçilmemiþse uyarý veriyoruz
+
                 MessageBox.Show("Lütfen önce bir protokol seçiniz!", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
@@ -1516,6 +1516,7 @@ namespace PROJE
 
                 int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
                 int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                DateTime gTarih = Convert.ToDateTime(selectedRow.Cells[2].Value);
                 string tema = cmbTema.Text;
 
 
@@ -1524,6 +1525,7 @@ namespace PROJE
                 taniForm.protokolNo = protokolNo;
                 taniForm.dosyaNo = dosyaNo;
                 taniForm.tema = tema;
+                taniForm.gTarih = gTarih;
 
                 taniForm.ShowDialog();
 
@@ -1539,14 +1541,12 @@ namespace PROJE
 
         }
 
+
         private void btnGebelikTakibi_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                // Seçilen satýrý alýyoruz
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-
-                // Protokol numarasýný ve dosya numarasýný alýyoruz
                 int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
                 int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
                 string hastaAdi = lblAdBilgi.Text;
@@ -1554,11 +1554,8 @@ namespace PROJE
                 long tcKimlikNo = Convert.ToInt64(lblTCbilgi.Text);
                 string tema = cmbTema.Text;
 
-                // FormRecete formunu oluþturuyoruz
-
+                // GebelikTakip formunu oluþturuyoruz
                 FormGebelikTakip gebelikForm = new FormGebelikTakip();
-
-                // FormRecete'ye protokolNo ve dosyaNo deðerlerini aktarýyoruz
                 gebelikForm.protokolNo = protokolNo;
                 gebelikForm.dosyaNo = dosyaNo;
                 gebelikForm.hastaAdi = hastaAdi;
@@ -1566,21 +1563,88 @@ namespace PROJE
                 gebelikForm.tcKimlikNo = tcKimlikNo;
                 gebelikForm.tema = tema;
 
+                gebelikForm.Yenile(protokolNo);
 
-                // Formu gösteriyoruz
                 gebelikForm.ShowDialog();
             }
             else
             {
-                // Eðer satýr seçilmemiþse uyarý veriyoruz
+                MessageBox.Show("Lütfen önce bir protokol seçiniz!", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sideBar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnIslemTetkik_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+
+                int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
+                int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                string hastaAdi = lblAdBilgi.Text;
+                string hastaSoyadi = lblSoyadBilgi.Text;
+                long tcKimlikNo = Convert.ToInt64(lblTCbilgi.Text);
+
+                string tema = cmbTema.Text;
+
+                FormIslemTetkik islemTetkik = new FormIslemTetkik();
+
+                islemTetkik.protokolNo = protokolNo;
+                islemTetkik.dosyaNo = dosyaNo;
+                islemTetkik.hastaAdi = hastaAdi;
+                islemTetkik.hastaSoyadi = hastaSoyadi;
+                islemTetkik.tcKimlikNo = tcKimlikNo;
+                islemTetkik.tema = tema;
+
+                islemTetkik.ShowDialog();
+
+            }
+            else
+            {
                 MessageBox.Show("Lütfen önce bir protokol seçiniz!", "Uyarý", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void btnVezne_Click(object sender, EventArgs e)
         {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
 
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+
+                int protokolNo = Convert.ToInt32(selectedRow.Cells[1].Value);
+                int dosyaNo = Convert.ToInt32(selectedRow.Cells[0].Value);
+                string hastaAdi = lblAdBilgi.Text;
+                string hastaSoyadi = lblSoyadBilgi.Text;
+                long tcKimlikNo = Convert.ToInt64(lblTCbilgi.Text);
+
+                string tema = cmbTema.Text;
+
+                FormVezne islemTetkik = new FormVezne();
+
+                islemTetkik.protokolNo = protokolNo;
+                islemTetkik.dosyaNo = dosyaNo;
+                islemTetkik.hastaAdi = hastaAdi;
+                islemTetkik.hastaSoyadi = hastaSoyadi;
+                islemTetkik.tcKimlikNo = tcKimlikNo;
+                islemTetkik.tema = tema;
+
+                islemTetkik.ShowDialog();
+
+            }
         }
     }
 }

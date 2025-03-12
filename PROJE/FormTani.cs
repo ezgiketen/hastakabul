@@ -22,6 +22,8 @@ namespace PROJE
         public long tcKimlikNo { get; set; }
         public string tema { get; set; }
 
+        public DateTime gTarih { get; set; }
+
 
 
         string icdKodu;
@@ -154,7 +156,7 @@ namespace PROJE
                     }
                     else
                     {
-                        // Tek bir ICD kodu varsa
+
                         sql2 = "SELECT ICD, TANI FROM HASTANE.TANILAR WHERE ICD = :ICD1";
 
                         command2 = new OracleCommand(sql2, connection);
@@ -168,18 +170,17 @@ namespace PROJE
                         dataGridViewTani.DataSource = taniDataTable;
                     }
 
-                    // DataGridView ayarları
                     dataGridViewTani.RowHeadersVisible = false;
                     dataGridViewTani.AllowUserToAddRows = false;
                     dataGridViewTani.Columns[0].Width = 200;
                     dataGridViewTani.Columns[1].Width = 1130;
 
 
-                    // Renklendirme fonksiyonunu çağır
+
                     RenklendirGrid();
                 }
 
-               
+
 
 
             }
@@ -233,8 +234,8 @@ namespace PROJE
 
                     if (!string.IsNullOrEmpty(icdKodu) && !string.IsNullOrEmpty(taniAdi))
                     {
-                        string sql = "INSERT INTO HASTANE.PROJE_TANILAR (DOSYA_NO, PROTOKOL_NO, ICD, TANI) " +
-                                     "VALUES (:DOSYA_NO, :PROTOKOL_NO, :ICD, :TANI)";
+                        string sql = "INSERT INTO HASTANE.PROJE_TANILAR (DOSYA_NO, PROTOKOL_NO, ICD, TANI, GTARIH) " +
+                                     "VALUES (:DOSYA_NO, :PROTOKOL_NO, :ICD, :TANI, :GTARIH)";
 
                         using (OracleCommand cmd = new OracleCommand(sql, connection))
                         {
@@ -242,6 +243,7 @@ namespace PROJE
                             cmd.Parameters.Add(":PROTOKOL_NO", OracleDbType.Int32).Value = protokolNo;
                             cmd.Parameters.Add(":ICD", OracleDbType.Varchar2).Value = icdKodu;
                             cmd.Parameters.Add(":TANI", OracleDbType.Varchar2).Value = taniAdi;
+                            cmd.Parameters.Add("GTARIH", OracleDbType.Date).Value = gTarih;
 
                             cmd.ExecuteNonQuery();
                         }
@@ -260,7 +262,7 @@ namespace PROJE
             using (OracleConnection connection = new OracleDbHelper().GetConnection())
             {
                 connection.Open();
-                string sql = "SELECT  DOSYA_NO , PROTOKOL_NO, ICD, TANI FROM HASTANE.PROJE_TANILAR WHERE DOSYA_NO = :DOSYA_NO";
+                string sql = "SELECT  DOSYA_NO ,PROTOKOL_NO, GTARIH, ICD, TANI FROM HASTANE.PROJE_TANILAR WHERE DOSYA_NO = :DOSYA_NO";
 
                 using (OracleCommand cmd = new OracleCommand(sql, connection))
                 {
@@ -275,6 +277,8 @@ namespace PROJE
                 }
             }
 
+            dataGridViewGöster.Sort(dataGridViewGöster.Columns["GTARIH"], ListSortDirection.Descending);
+
             for (int i = 0; i < dataGridViewGöster.Rows.Count; i++)
             {
                 if (i % 2 == 0)
@@ -283,14 +287,13 @@ namespace PROJE
                     dataGridViewGöster.Rows[i].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#dddddd");
             }
 
-
-            // DataGridView görünüm ayarları
             dataGridViewGöster.RowHeadersVisible = false;
             dataGridViewGöster.AllowUserToAddRows = false;
             dataGridViewGöster.Columns[0].Width = 150;
             dataGridViewGöster.Columns[1].Width = 150;
             dataGridViewGöster.Columns[2].Width = 190;
-            dataGridViewGöster.Columns[3].Width = 840;
+            dataGridViewGöster.Columns[3].Width = 190;
+            dataGridViewGöster.Columns[4].Width = 1000;
         }
 
         private void btnTaniSil_Click(object sender, EventArgs e)
@@ -332,9 +335,17 @@ namespace PROJE
             }
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
 
+
+        private void txtTaniAra_Click(object sender, EventArgs e)
+        {
+            txtTaniAra.Text = string.Empty;
+            txtTaniAra.ForeColor = System.Drawing.Color.Black;
+        }
+
+        private void cmbTani_Click(object sender, EventArgs e)
+        {
+            cmbTani.ForeColor = System.Drawing.Color.Black;
         }
     }
 }
